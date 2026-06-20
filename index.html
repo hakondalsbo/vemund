@@ -6,709 +6,742 @@
 <title>Øya – Vemunds verden</title>
 <style>
 :root{
-  --bg:#061116;--panel:#0b1a1f;--gold:#f1bd71;--paper:#e8cda1;
-  --text:#fff1d6;--muted:#c8b898;--line:rgba(232,205,161,.22);
-  --blue:#7bd8ff;--red:#ff7b7b;--green:#7bffaa;--purple:#c47bff;
-  color-scheme:dark;
+  --gold:#f1bd71;--paper:#e8cda1;--text:#fff1d6;--muted:#c0a880;
+  --line:rgba(232,205,161,.2);--blue:#7bd8ff;--panel:rgba(11,26,31,.93);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:linear-gradient(160deg,#04090c 0%,#0e2028 55%,#061116 100%);
-  color:var(--text);font-family:Trebuchet MS,Verdana,sans-serif;min-height:100vh;}
-button,input,textarea{font:inherit;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;}
+body{
+  background:linear-gradient(160deg,#04090c,#0d1f27 55%,#061116);
+  color:var(--text);font-family:Trebuchet MS,Verdana,sans-serif;min-height:100vh;
+  -webkit-text-size-adjust:100%;
+}
+/* prevent double-tap zoom on all interactive elements */
+button,a,input,textarea,select{touch-action:manipulation;font:inherit;}
 
-/* HEADER */
-.header{
-  position:sticky;top:0;z-index:20;
-  display:flex;align-items:center;gap:10px;
-  padding:10px 16px;
-  background:rgba(6,17,22,.97);
-  backdrop-filter:blur(16px);
+/* ── HEADER ─────────────────────────────────────────── */
+.hdr{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;gap:8px;padding:9px 14px;
+  background:rgba(4,9,12,.97);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
-.header-center{flex:1;text-align:center;}
-.chapter-pill{
-  display:inline-block;padding:2px 11px;
-  border:1px solid rgba(241,189,113,.4);background:rgba(241,189,113,.1);
-  color:var(--gold);font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;
-  border-radius:20px;margin-bottom:3px;
+.hdr-mid{flex:1;text-align:center;}
+.kap-pill{
+  display:inline-block;padding:2px 10px;border-radius:20px;
+  border:1px solid rgba(241,189,113,.4);background:rgba(241,189,113,.09);
+  color:var(--gold);font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:2px;
 }
-.site-title{font-size:clamp(1.5rem,5vw,2.1rem);line-height:1;letter-spacing:-.02em;}
+.site-ttl{font-size:clamp(1.4rem,5vw,2rem);line-height:1;letter-spacing:-.02em;}
 .icon-btn{
-  width:40px;height:40px;border-radius:50%;flex-shrink:0;
-  border:1px solid var(--line);background:rgba(232,205,161,.08);
-  color:var(--text);cursor:pointer;font-size:1rem;
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  border:1px solid var(--line);background:rgba(255,255,255,.06);
+  color:var(--text);cursor:pointer;font-size:1.05rem;
   display:flex;align-items:center;justify-content:center;
 }
-.icon-btn:hover{border-color:var(--gold);}
+.icon-btn:active{background:rgba(241,189,113,.15);}
 
-/* APP */
-.app{width:min(960px,100%);margin:auto;padding:12px 14px 40px;}
+/* ── WRAPPER ─────────────────────────────────────────── */
+.app{width:min(920px,100%);margin:auto;padding:12px 12px 50px;}
 
-/* STATS */
-.stats-bar{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
-  padding:12px 0 14px;border-bottom:1px solid var(--line);margin-bottom:18px;
+/* ── STATS ───────────────────────────────────────────── */
+.stats{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+  padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:16px;
 }
-.stat{text-align:center;}
-.stat-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);display:block;margin-bottom:2px;}
-.stat-sub{font-size:.54rem;color:var(--muted);display:block;margin-bottom:4px;}
-.stat-val{font-size:1rem;font-weight:bold;display:block;margin-bottom:5px;}
-.bar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:2px;transition:width .5s ease;}
-.fill-storm {background:linear-gradient(90deg,#ff7b4a,#e03030);}
-.fill-ro    {background:linear-gradient(90deg,#4ab8ff,#7bd8ff);}
-.fill-oliver{background:linear-gradient(90deg,#5eff90,#3ddd77);}
-.fill-hans  {background:linear-gradient(90deg,#b07bff,#8844ee);}
-.fill-keys  {background:linear-gradient(90deg,#f1bd71,#e0952a);}
+.st{text-align:center;}
+.st-lbl{display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:1px;}
+.st-desc{display:block;font-size:.5rem;color:var(--muted);margin-bottom:3px;line-height:1.2;}
+.st-val{display:block;font-size:.95rem;font-weight:700;margin-bottom:4px;}
+.sbar{height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.sfill{height:100%;border-radius:2px;transition:width .5s;}
+.s-storm{background:linear-gradient(90deg,#ff6b3a,#dd2020);}
+.s-ro   {background:linear-gradient(90deg,#38b4ff,#7bd8ff);}
+.s-oliv {background:linear-gradient(90deg,#44ff88,#22cc66);}
+.s-hans {background:linear-gradient(90deg,#aa66ff,#7733ee);}
+.s-keys {background:linear-gradient(90deg,#f1bd71,#d4881a);}
 
-/* SECTIONS */
-section{margin-bottom:28px;}
-.label{font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);display:block;margin-bottom:5px;}
-h2{font-size:clamp(1.1rem,4vw,1.45rem);margin-bottom:12px;line-height:1.1;}
-h3{font-size:.98rem;margin-bottom:6px;}
-p{color:var(--muted);line-height:1.55;font-size:.9rem;}
+/* ── SECTION HEADER ──────────────────────────────────── */
+.sec-lbl{display:block;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:4px;}
+h2{font-size:clamp(1.05rem,4vw,1.4rem);margin-bottom:10px;line-height:1.1;}
+h3{font-size:.95rem;margin-bottom:5px;}
+p{color:var(--muted);line-height:1.55;font-size:.88rem;}
+section{margin-bottom:24px;}
 
-/* CHAPTER CARD */
-.chapter-card{
+/* ── CHAPTER CARD ────────────────────────────────────── */
+.kap-card{
   position:relative;overflow:hidden;
-  border:1px solid rgba(241,189,113,.4);
-  background:linear-gradient(135deg,rgba(11,26,31,.97),rgba(8,18,24,.97));
-  padding:20px 22px;margin-bottom:20px;
+  border:1px solid rgba(241,189,113,.38);
+  background:linear-gradient(135deg,rgba(11,26,31,.98),rgba(6,14,20,.98));
+  padding:18px;margin-bottom:18px;
 }
-.chapter-card::after{
-  content:'';position:absolute;right:-20px;top:-30px;
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(241,189,113,.09),transparent 70%);
+.kap-card::after{
+  content:'';position:absolute;right:-24px;top:-24px;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,rgba(241,189,113,.1),transparent 70%);
   pointer-events:none;
 }
-.chapter-n{font-size:.68rem;text-transform:uppercase;color:var(--gold);letter-spacing:.1em;margin-bottom:4px;}
-.chapter-title{font-size:clamp(1.25rem,5vw,1.7rem);margin-bottom:10px;line-height:1.1;}
-.chapter-text{color:var(--muted);line-height:1.6;font-size:.92rem;}
+.kap-n{font-size:.62rem;text-transform:uppercase;color:var(--gold);letter-spacing:.1em;margin-bottom:3px;}
+.kap-ttl{font-size:clamp(1.15rem,5vw,1.6rem);margin-bottom:8px;line-height:1.1;}
+.kap-txt{color:var(--muted);line-height:1.6;font-size:.88rem;}
 
-/* SCENE */
-.scene-panel{border:1px solid var(--line);background:rgba(11,26,31,.92);padding:18px 20px;}
-.scene-tag{font-size:.66rem;text-transform:uppercase;color:var(--blue);letter-spacing:.07em;margin-bottom:6px;display:block;}
-.scene-h{font-size:1.15rem;margin-bottom:10px;}
-.choices{display:grid;gap:8px;margin-top:14px;}
-.choice{
-  text-align:left;padding:11px 14px;
-  border:1px solid var(--line);background:rgba(232,205,161,.06);
-  color:var(--text);cursor:pointer;font-size:.88rem;border-radius:3px;
-  transition:border-color .2s,background .2s;line-height:1.4;
+/* ── LOCATION GRID ───────────────────────────────────── */
+.loc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
+.loc-card{
+  border:1px solid var(--line);background:var(--panel);
+  padding:12px;position:relative;
+  transition:border-color .18s,background .18s;
 }
-.choice:hover:not(:disabled){border-color:var(--gold);background:rgba(241,189,113,.11);}
-.choice.picked{border-color:rgba(123,216,255,.5);background:rgba(123,216,255,.08);color:var(--muted);cursor:default;}
-.choice:disabled{opacity:.4;cursor:default;}
-.scene-result{
-  margin-top:14px;padding:11px 14px;
-  border-left:3px solid var(--gold);background:rgba(241,189,113,.07);
-  color:var(--paper);font-size:.9rem;line-height:1.5;
+.loc-card.active{border-color:var(--gold);background:rgba(241,189,113,.09);}
+.loc-card.visited .loc-name::after{
+  content:' ✓';color:var(--blue);font-size:.7em;
 }
-.next-scene-btn{
-  margin-top:12px;width:100%;padding:11px;
-  border:1px solid var(--line);background:rgba(232,205,161,.08);
-  color:var(--muted);cursor:pointer;font-size:.85rem;
-  transition:border-color .2s,color .2s;
-}
-.next-scene-btn:hover{border-color:var(--gold);color:var(--text);}
-
-/* LOCATIONS */
-.loc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-.loc-card{border:1px solid var(--line);background:rgba(11,26,31,.9);padding:13px;position:relative;transition:border-color .2s,background .2s;}
-.loc-card.active{border-color:var(--gold);background:rgba(241,189,113,.08);}
-.loc-card.visited::before{
-  content:'✓';position:absolute;top:8px;right:10px;
-  font-size:.65rem;color:var(--blue);background:rgba(123,216,255,.15);
-  border:1px solid rgba(123,216,255,.3);padding:1px 6px;border-radius:10px;
-}
-.loc-type{font-size:.62rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;display:block;margin-bottom:3px;}
-.loc-name{font-size:.95rem;font-weight:bold;display:block;margin-bottom:6px;}
-.loc-preview{font-size:.77rem;color:var(--muted);line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;}
-.loc-actions{display:flex;gap:5px;flex-wrap:wrap;}
+.loc-type{display:block;font-size:.58rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;margin-bottom:2px;}
+.loc-name{display:block;font-size:.9rem;font-weight:700;margin-bottom:5px;}
+.loc-prev{font-size:.74rem;color:var(--muted);line-height:1.35;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.loc-btns{display:flex;gap:4px;}
 .loc-btn{
-  flex:1;min-width:64px;padding:6px 7px;font-size:.72rem;
+  flex:1;min-height:44px;padding:6px 4px;font-size:.72rem;
   border:1px solid var(--line);background:rgba(232,205,161,.06);
-  color:var(--text);cursor:pointer;border-radius:2px;white-space:nowrap;
-  transition:border-color .2s;
+  color:var(--text);cursor:pointer;border-radius:2px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  transition:border-color .18s,background .18s;line-height:1.2;
 }
-.loc-btn:hover{border-color:var(--gold);}
-.loc-btn.primary{background:rgba(241,189,113,.14);border-color:rgba(241,189,113,.35);}
-.loc-result{
-  margin-top:10px;padding:8px 10px;font-size:.78rem;
-  color:var(--paper);background:rgba(241,189,113,.07);
-  border-left:2px solid var(--gold);line-height:1.5;
+.loc-btn:active{background:rgba(241,189,113,.18);border-color:var(--gold);}
+.loc-btn.primary{background:rgba(241,189,113,.12);border-color:rgba(241,189,113,.3);}
+.loc-btn-ico{font-size:.9rem;}
+
+/* ── SCENE PANEL ─────────────────────────────────────── */
+.scene-wrap{
+  border:1px solid rgba(123,216,255,.25);
+  background:rgba(8,20,27,.97);
+  padding:16px;margin-bottom:24px;
+}
+.scene-tag{display:block;font-size:.62rem;text-transform:uppercase;color:var(--blue);letter-spacing:.07em;margin-bottom:5px;}
+.scene-h{font-size:1.05rem;margin-bottom:8px;line-height:1.2;}
+.scene-bod{font-size:.86rem;color:var(--muted);line-height:1.55;margin-bottom:4px;}
+.choices{display:grid;gap:7px;margin-top:12px;}
+.ch-btn{
+  text-align:left;min-height:52px;padding:11px 13px;
+  border:1px solid var(--line);background:rgba(232,205,161,.06);
+  color:var(--text);cursor:pointer;font-size:.86rem;border-radius:3px;
+  line-height:1.4;transition:border-color .18s,background .18s;
+}
+.ch-btn:active:not(:disabled){background:rgba(241,189,113,.15);border-color:var(--gold);}
+.ch-btn.picked{border-color:rgba(123,216,255,.45);background:rgba(123,216,255,.08);color:var(--muted);cursor:default;}
+.ch-btn:disabled{opacity:.38;cursor:default;}
+.scene-res{
+  margin-top:12px;padding:10px 13px;
+  border-left:3px solid var(--gold);background:rgba(241,189,113,.07);
+  color:var(--paper);font-size:.87rem;line-height:1.55;
+}
+.next-btn{
+  margin-top:10px;width:100%;min-height:44px;padding:10px;
+  border:1px solid var(--line);background:rgba(255,255,255,.05);
+  color:var(--muted);cursor:pointer;font-size:.84rem;
+  transition:border-color .18s,color .18s;
+}
+.next-btn:active{border-color:var(--gold);color:var(--text);}
+
+/* ── LOC RESULT ──────────────────────────────────────── */
+.loc-res{
+  margin-top:8px;padding:8px 10px;
+  border-left:2px solid var(--gold);background:rgba(241,189,113,.06);
+  font-size:.76rem;color:var(--paper);line-height:1.5;
 }
 
-/* CHARACTERS */
-.char-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-.char-tab{padding:6px 13px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;font-size:.82rem;border-radius:20px;transition:all .2s;}
-.char-tab:hover{border-color:rgba(241,189,113,.4);color:var(--text);}
-.char-tab.active{background:rgba(232,205,161,.13);border-color:var(--gold);color:var(--text);}
-.char-card{border:1px solid var(--line);background:rgba(11,26,31,.9);overflow:hidden;}
-.char-img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:rgba(11,26,31,.8);}
-.char-body{padding:16px;}
-.char-role{font-size:.66rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;}
-.char-name{font-size:1.25rem;margin:4px 0 9px;}
-.char-facts{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:10px 0;}
-.fact-k{color:var(--gold);font-size:.8rem;}
-.fact-v{color:var(--muted);font-size:.8rem;}
-.use-btn{width:100%;padding:10px;margin-top:10px;border:1px solid var(--line);background:rgba(232,205,161,.09);color:var(--text);cursor:pointer;transition:border-color .2s;}
-.use-btn:hover{border-color:var(--gold);}
+/* ── CHARACTERS ──────────────────────────────────────── */
+.char-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.char-tab{
+  min-height:40px;padding:7px 13px;
+  border:1px solid var(--line);background:transparent;
+  color:var(--muted);cursor:pointer;font-size:.82rem;border-radius:20px;
+  transition:all .18s;
+}
+.char-tab.active{background:rgba(232,205,161,.12);border-color:var(--gold);color:var(--text);}
+.char-tab:active{background:rgba(241,189,113,.15);}
+.char-card{border:1px solid var(--line);background:var(--panel);overflow:hidden;}
+.char-img{
+  width:100%;display:block;max-height:200px;object-fit:cover;
+  background:rgba(11,26,31,.9);
+}
+.char-body{padding:14px;}
+.char-role{font-size:.62rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;}
+.char-name{font-size:1.2rem;margin:3px 0 8px;}
+.char-facts{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0;}
+.fk{color:var(--gold);font-size:.77rem;}
+.fv{color:var(--muted);font-size:.77rem;}
+.use-btn{
+  width:100%;min-height:48px;padding:11px;margin-top:10px;
+  border:1px solid rgba(241,189,113,.35);background:rgba(241,189,113,.1);
+  color:var(--text);cursor:pointer;font-size:.9rem;
+  transition:background .18s;
+}
+.use-btn:active{background:rgba(241,189,113,.22);}
 
-/* ANIMALS */
-.animal-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-.animal-tag{padding:5px 11px;border:1px solid var(--line);background:rgba(11,26,31,.8);font-size:.78rem;color:var(--muted);border-radius:20px;}
+/* ── ANIMALS ─────────────────────────────────────────── */
+.animal-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
+.a-tag{
+  padding:6px 11px;border:1px solid var(--line);
+  background:rgba(11,26,31,.8);font-size:.79rem;
+  color:var(--muted);border-radius:20px;
+}
 
-/* QUIZ */
-.quiz-grid{display:grid;gap:10px;}
-.quiz-card{border:1px solid var(--line);background:rgba(11,26,31,.9);padding:15px;}
-.quiz-card.solved{border-color:rgba(123,216,255,.4);background:rgba(123,216,255,.06);}
-.quiz-card.locked{opacity:.58;}
-.quiz-tag{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);display:block;margin-bottom:6px;}
-.quiz-q{color:var(--muted);font-size:.88rem;line-height:1.5;margin-bottom:6px;}
-details summary{cursor:pointer;color:var(--gold);font-size:.8rem;margin:6px 0;}
-details p{margin-top:4px;font-size:.82rem;}
-.ans-row{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:10px;}
-.ans-row input{padding:8px 11px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--text);font-size:.88rem;}
-.solve-btn{padding:8px 14px;border:1px solid rgba(241,189,113,.5);background:rgba(241,189,113,.1);color:var(--text);cursor:pointer;white-space:nowrap;}
-.solve-btn:hover{background:rgba(241,189,113,.18);}
-.quiz-fb{font-size:.78rem;color:var(--gold);margin-top:5px;min-height:1.1rem;}
+/* ── QUIZ ─────────────────────────────────────────────── */
+.quiz-grid{display:grid;gap:8px;}
+.quiz-card{border:1px solid var(--line);background:var(--panel);padding:14px;}
+.quiz-card.solved{border-color:rgba(123,216,255,.35);background:rgba(123,216,255,.06);}
+.quiz-card.locked{opacity:.55;}
+.q-tag{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:5px;}
+.q-txt{color:var(--muted);font-size:.86rem;line-height:1.5;margin-bottom:5px;}
+details{margin:5px 0;}
+details summary{cursor:pointer;color:var(--gold);font-size:.8rem;padding:4px 0;}
+details p{font-size:.8rem;padding-top:3px;}
+.ans-row{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:9px;}
+/* 16px font-size on input prevents iOS auto-zoom */
+.ans-row input{
+  padding:10px 12px;border:1px solid var(--line);
+  background:rgba(255,255,255,.07);color:var(--text);
+  font-size:1rem;border-radius:2px;
+}
+.solve-btn{
+  min-height:44px;padding:0 14px;
+  border:1px solid rgba(241,189,113,.45);background:rgba(241,189,113,.1);
+  color:var(--text);cursor:pointer;white-space:nowrap;font-size:.86rem;
+}
+.solve-btn:active{background:rgba(241,189,113,.22);}
+.q-fb{font-size:.77rem;color:var(--gold);margin-top:4px;min-height:1rem;}
 
-/* MISSIONS */
-.mission-grid{display:grid;gap:10px;}
-.mission-card{border:1px solid var(--line);background:rgba(11,26,31,.9);padding:15px;display:flex;gap:12px;align-items:flex-start;}
-.mission-card.done{border-color:rgba(123,216,255,.4);background:rgba(123,216,255,.06);}
-.mission-ico{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
-.mission-go{margin-top:8px;padding:6px 13px;border:1px solid var(--line);background:rgba(232,205,161,.07);color:var(--text);cursor:pointer;font-size:.8rem;}
-.mission-go:hover{border-color:var(--gold);}
+/* ── MISSIONS ────────────────────────────────────────── */
+.miss-grid{display:grid;gap:8px;}
+.miss-card{border:1px solid var(--line);background:var(--panel);padding:14px;display:flex;gap:11px;align-items:flex-start;}
+.miss-card.done{border-color:rgba(123,216,255,.35);background:rgba(123,216,255,.06);}
+.miss-ico{font-size:1.25rem;flex-shrink:0;padding-top:2px;}
+.miss-go{
+  margin-top:7px;min-height:44px;padding:0 13px;
+  border:1px solid var(--line);background:rgba(241,189,113,.08);
+  color:var(--text);cursor:pointer;font-size:.8rem;display:inline-flex;align-items:center;
+}
+.miss-go:active{border-color:var(--gold);}
 
-/* LOG */
-.log-list{list-style:none;display:grid;gap:6px;}
-.log-list li{padding:8px 12px;border-left:3px solid var(--gold);background:rgba(255,255,255,.04);font-size:.83rem;color:var(--muted);line-height:1.5;}
+/* ── THEORY ──────────────────────────────────────────── */
+/* font-size:1rem = 16px prevents iOS zoom */
+textarea{
+  width:100%;min-height:100px;padding:12px;resize:vertical;
+  border:1px solid var(--line);background:rgba(255,255,255,.05);
+  color:var(--text);font-size:1rem;line-height:1.5;border-radius:2px;
+}
+textarea::placeholder{color:rgba(192,168,128,.38);}
 
-/* THEORY */
-textarea{width:100%;min-height:110px;padding:12px;resize:vertical;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);font-size:.88rem;line-height:1.5;}
-textarea::placeholder{color:rgba(200,184,152,.4);}
+/* ── LOG ─────────────────────────────────────────────── */
+.log-list{list-style:none;display:grid;gap:5px;}
+.log-list li{
+  padding:8px 11px;border-left:3px solid var(--gold);
+  background:rgba(255,255,255,.04);font-size:.81rem;color:var(--muted);line-height:1.5;
+}
 
-/* TOAST */
-.toast{position:fixed;left:50%;bottom:18px;z-index:50;width:min(360px,calc(100vw - 24px));padding:10px 14px;border-radius:3px;border:1px solid rgba(241,189,113,.5);background:rgba(5,13,17,.97);font-size:.85rem;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.18s;}
+/* ── TOAST ───────────────────────────────────────────── */
+.toast{
+  position:fixed;left:50%;bottom:16px;z-index:99;
+  width:min(340px,calc(100vw - 24px));
+  padding:10px 13px;border-radius:3px;
+  border:1px solid rgba(241,189,113,.45);background:rgba(4,9,12,.97);
+  font-size:.85rem;line-height:1.4;
+  transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.18s;
+}
 .toast.show{opacity:1;transform:translate(-50%,0);}
 
-/* DIALOG */
-dialog{width:min(800px,calc(100vw - 20px));padding:0;border:1px solid var(--line);background:#050d11;border-radius:4px;}
-dialog::backdrop{background:rgba(0,0,0,.82);}
-dialog img{width:100%;display:block;max-height:82vh;object-fit:contain;}
-.dlg-close{position:absolute;right:8px;top:8px;z-index:2;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.75);border:1px solid var(--line);color:var(--text);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
-
-/* RESPONSIVE */
-@media(min-width:580px){
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(min-width:560px){
   .loc-grid{grid-template-columns:repeat(3,1fr);}
   .quiz-grid{grid-template-columns:repeat(2,1fr);}
-  .mission-grid{grid-template-columns:repeat(2,1fr);}
-  .char-card{display:grid;grid-template-columns:200px 1fr;}
-  .char-img{height:100%;aspect-ratio:unset;}
+  .miss-grid{grid-template-columns:repeat(2,1fr);}
+  .char-card{display:grid;grid-template-columns:190px 1fr;}
+  .char-img{max-height:none;height:100%;object-fit:cover;}
 }
+/* Very small screens: stack stats 3+2 */
 @media(max-width:400px){
-  .stats-bar{grid-template-columns:repeat(3,1fr);}
+  .stats{grid-template-columns:repeat(3,1fr);}
+  .loc-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
-<dialog id="dlg"><button class="dlg-close" id="dlgClose">×</button><img id="dlgImg" alt=""></dialog>
 
-<!-- HEADER -->
-<header class="header">
-  <button class="icon-btn" id="resetBtn" title="Start på nytt">↺</button>
-  <div class="header-center">
-    <div class="chapter-pill" id="chapterPill">Kapittel 1 av 5</div>
-    <div class="site-title">Øya</div>
+<!-- ══ HEADER ═══════════════════════════════════════════ -->
+<header class="hdr">
+  <button class="icon-btn" id="resetBtn" title="Start på nytt" aria-label="Start på nytt">↺</button>
+  <div class="hdr-mid">
+    <div class="kap-pill" id="kapPill">Kapittel 1 av 5</div>
+    <div class="site-ttl">Øya</div>
   </div>
-  <button class="icon-btn" id="saveBtn" title="Lagre">✓</button>
+  <button class="icon-btn" id="saveBtn" title="Lagre fremdrift" aria-label="Lagre">✓</button>
 </header>
 
 <div class="app">
 
-  <!-- STATS -->
-  <div class="stats-bar">
-    <div class="stat">
-      <span class="stat-lbl">Storm</span>
-      <span class="stat-sub">Fare for Vemund</span>
-      <span class="stat-val" id="sStorm">55</span>
-      <div class="bar"><div class="bar-fill fill-storm" id="bStorm" style="width:55%"></div></div>
+  <!-- ══ STATS ════════════════════════════════════════════ -->
+  <div class="stats">
+    <div class="st">
+      <span class="st-lbl">Storm</span>
+      <span class="st-desc">Fare</span>
+      <span class="st-val" id="vStorm">55</span>
+      <div class="sbar"><div class="sfill s-storm" id="bStorm" style="width:55%"></div></div>
     </div>
-    <div class="stat">
-      <span class="stat-lbl">Ro</span>
-      <span class="stat-sub">Vemunds kontroll</span>
-      <span class="stat-val" id="sRo">58</span>
-      <div class="bar"><div class="bar-fill fill-ro" id="bRo" style="width:58%"></div></div>
+    <div class="st">
+      <span class="st-lbl">Ro</span>
+      <span class="st-desc">Kontroll</span>
+      <span class="st-val" id="vRo">58</span>
+      <div class="sbar"><div class="sfill s-ro" id="bRo" style="width:58%"></div></div>
     </div>
-    <div class="stat">
-      <span class="stat-lbl">Oliver</span>
-      <span class="stat-sub">Tillit</span>
-      <span class="stat-val" id="sOliver">35</span>
-      <div class="bar"><div class="bar-fill fill-oliver" id="bOliver" style="width:35%"></div></div>
+    <div class="st">
+      <span class="st-lbl">Oliver</span>
+      <span class="st-desc">Tillit</span>
+      <span class="st-val" id="vOliver">35</span>
+      <div class="sbar"><div class="sfill s-oliv" id="bOliver" style="width:35%"></div></div>
     </div>
-    <div class="stat">
-      <span class="stat-lbl">Hans</span>
-      <span class="stat-sub">Mistanke</span>
-      <span class="stat-val" id="sHans">25</span>
-      <div class="bar"><div class="bar-fill fill-hans" id="bHans" style="width:25%"></div></div>
+    <div class="st">
+      <span class="st-lbl">Hans</span>
+      <span class="st-desc">Mistanke</span>
+      <span class="st-val" id="vHans">25</span>
+      <div class="sbar"><div class="sfill s-hans" id="bHans" style="width:25%"></div></div>
     </div>
-    <div class="stat">
-      <span class="stat-lbl">Nøkler</span>
-      <span class="stat-sub">Oppdaget</span>
-      <span class="stat-val" id="sKeys">0/147</span>
-      <div class="bar"><div class="bar-fill fill-keys" id="bKeys" style="width:0%"></div></div>
+    <div class="st">
+      <span class="st-lbl">Nøkler</span>
+      <span class="st-desc">Funnet</span>
+      <span class="st-val" id="vKeys">0</span>
+      <div class="sbar"><div class="sfill s-keys" id="bKeys" style="width:0%"></div></div>
     </div>
   </div>
 
-  <!-- CHAPTER CARD -->
+  <!-- ══ KAPITTELKORT ══════════════════════════════════════ -->
   <section>
-    <div class="chapter-card">
-      <div class="chapter-n" id="chapN">Kapittel 1</div>
-      <h2 class="chapter-title" id="chapTitle">Stormen starter</h2>
-      <p class="chapter-text" id="chapText">Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene. Noe er i ferd med å begynne.</p>
+    <div class="kap-card">
+      <div class="kap-n" id="kapN">Kapittel 1</div>
+      <h2 class="kap-ttl" id="kapTtl">Stormen starter</h2>
+      <p class="kap-txt" id="kapTxt">Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene.</p>
     </div>
   </section>
 
-  <!-- AKTIV SCENE -->
+  <!-- ══ STEDER ════════════════════════════════════════════ -->
   <section>
-    <span class="label">Aktiv hendelse</span>
-    <h2>Hva skjer nå?</h2>
-    <div class="scene-panel" id="scenePanel">
-      <span class="scene-tag" id="sceneTag"></span>
-      <h3 class="scene-h" id="sceneH"></h3>
-      <p id="sceneBody"></p>
-      <div class="choices" id="choicesEl"></div>
-      <div class="scene-result" id="sceneResult" style="display:none"></div>
-      <button class="next-scene-btn" id="nextSceneBtn">Neste hendelse →</button>
-    </div>
-  </section>
-
-  <!-- LOKASJONER -->
-  <section>
-    <span class="label">Utforsk øya</span>
+    <span class="sec-lbl">Utforsk øya</span>
     <h2>Steder å besøke</h2>
     <div class="loc-grid" id="locGrid"></div>
   </section>
 
-  <!-- KARAKTERER -->
+  <!-- ══ AKTIV SCENE — vises etter at man velger sted ══════ -->
+  <section id="sceneSection">
+    <span class="sec-lbl">Aktiv hendelse</span>
+    <h2 id="sceneH2">Hva skjer nå?</h2>
+    <div class="scene-wrap" id="sceneWrap">
+      <span class="scene-tag" id="sceneTag"></span>
+      <h3 class="scene-h" id="sceneH3"></h3>
+      <p class="scene-bod" id="sceneBod"></p>
+      <div class="choices" id="choicesEl"></div>
+      <div class="scene-res" id="sceneRes" style="display:none"></div>
+      <button class="next-btn" id="nextBtn">Neste hendelse →</button>
+    </div>
+  </section>
+
+  <!-- ══ KARAKTERER ════════════════════════════════════════ -->
   <section>
-    <span class="label">Personer</span>
+    <span class="sec-lbl">Personer</span>
     <h2>Hvem holder øya sammen?</h2>
     <div class="char-tabs" id="charTabs"></div>
-    <div class="char-card" id="charCard">
+    <div class="char-card">
       <img class="char-img" id="charImg" alt="">
       <div class="char-body">
         <div class="char-role" id="charRole"></div>
         <div class="char-name" id="charName"></div>
-        <p id="charText"></p>
+        <p id="charTxt"></p>
         <div class="char-facts" id="charFacts"></div>
-        <button class="use-btn" id="useCharBtn"></button>
+        <button class="use-btn" id="useBtn"></button>
       </div>
     </div>
   </section>
 
-  <!-- DYR -->
+  <!-- ══ DYR ══════════════════════════════════════════════ -->
   <section>
-    <span class="label">Dyr på øya</span>
+    <span class="sec-lbl">Dyr på øya</span>
     <h2>Gårdens beboere</h2>
     <p>Bodar lever tett på dyrene. De kjenner øyas rytme bedre enn de fleste mennesker gjør.</p>
     <div class="animal-row">
-      <span class="animal-tag">🐄 Storfe</span>
-      <span class="animal-tag">🐑 Sauer</span>
-      <span class="animal-tag">🐓 Høner</span>
-      <span class="animal-tag">🐈 Gårdskatt</span>
-      <span class="animal-tag">🦅 Havørn</span>
-      <span class="animal-tag">🦊 Rev i skogen</span>
-      <span class="animal-tag">🐟 Torsk ved brygga</span>
-      <span class="animal-tag">🐦 Måker ved fyret</span>
+      <span class="a-tag">🐄 Storfe</span>
+      <span class="a-tag">🐑 Sauer</span>
+      <span class="a-tag">🐓 Høner</span>
+      <span class="a-tag">🐈 Gårdskatt</span>
+      <span class="a-tag">🦅 Havørn</span>
+      <span class="a-tag">🦊 Rev i skogen</span>
+      <span class="a-tag">🐟 Torsk ved brygga</span>
+      <span class="a-tag">🐦 Måker ved fyret</span>
     </div>
   </section>
 
-  <!-- GÅTEKAMMER -->
+  <!-- ══ GÅTEKAMMER ════════════════════════════════════════ -->
   <section>
-    <span class="label">Gåtekammer</span>
+    <span class="sec-lbl">Gåtekammer</span>
     <h2>Smarte oppgaver</h2>
     <div class="quiz-grid" id="quizGrid"></div>
   </section>
 
-  <!-- OPPDRAG -->
+  <!-- ══ OPPDRAG ══════════════════════════════════════════ -->
   <section>
-    <span class="label">Oppdrag</span>
+    <span class="sec-lbl">Oppdrag</span>
     <h2>Det som driver historien</h2>
-    <div class="mission-grid" id="missionGrid"></div>
+    <div class="miss-grid" id="missGrid"></div>
   </section>
 
-  <!-- MIN TEORI -->
+  <!-- ══ MIN TEORI ════════════════════════════════════════ -->
   <section>
-    <span class="label">Min teori</span>
+    <span class="sec-lbl">Min teori</span>
     <h2>Hva skjer videre?</h2>
-    <textarea id="theory" placeholder="Skriv teorier, nye spor eller hva du tror Vemund bør gjøre..."></textarea>
+    <textarea id="theory" placeholder="Skriv teorier, spor eller hva du tror Vemund bør gjøre..."></textarea>
   </section>
 
-  <!-- DAGBOK -->
+  <!-- ══ DAGBOK ════════════════════════════════════════════ -->
   <section>
-    <span class="label">Fyrdagbok</span>
+    <span class="sec-lbl">Fyrdagbok</span>
     <h2>Det som har skjedd</h2>
     <ol class="log-list" id="logEl"></ol>
   </section>
 
-</div>
+</div><!-- .app -->
 
 <script>
-/* DATA */
+/* ════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════ */
 const BASE='assets/ChatGPT Image Jun 4, 2026, ';
-const IMG={
-  oya:       BASE+'12_18_46 PM.png',
-  oliver2:   BASE+'12_18_53 PM.png',
-  scene:     BASE+'12_18_59 PM.png',
-  sceneWide: BASE+'12_19_07 PM.png',
-  vemund:    BASE+'12_19_16 PM.png',
-  oliver:    BASE+'12_19_44 PM.png',
-  bodar:     BASE+'12_19_55 PM.png',
-  hans:      BASE+'12_20_02 PM.png',
-  morfaren:  BASE+'12_20_14 PM.png',
+const IMGS={
+  oya:      BASE+'12_18_46 PM.png',
+  scene:    BASE+'12_18_59 PM.png',
+  sceneWide:BASE+'12_19_07 PM.png',
+  vemund:   BASE+'12_19_16 PM.png',
+  oliver:   BASE+'12_19_44 PM.png',
+  bodar:    BASE+'12_19_55 PM.png',
+  hans:     BASE+'12_20_02 PM.png',
+  morfaren: BASE+'12_20_14 PM.png',
 };
 
-const CHAPTERS=[
-  {num:1,title:'Stormen starter',    text:'Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene. Noe er i ferd med å begynne.',                                                                       unlock:s=>true},
-  {num:2,title:'Sporene samles',     text:'Oliver har tegnet et kart over blinkemønstrene. Fyret ser plutselig ikke tilfeldig ut lenger. Vemund og Oliver begynner å forstå at øya snakker.',                                              unlock:s=>s.visited.length>=2},
-  {num:3,title:'Hans sin skygge',    text:'Hans har lagt merke til noe han ikke burde ha sett. Vemund må velge hva han avslører og hva han skjuler. Tilliten til Oliver avgjør neste trekk.',                                              unlock:s=>s.visited.includes('skole')||s.visited.includes('nabolag')},
-  {num:4,title:'Bodars hemmelighet', text:'I skogen og på gården finnes regler som er eldre enn øya selv. Bodar vet hvilke. Vemund må lære dem før havet krever svar.',                                                                     unlock:s=>s.visited.includes('skog')&&s.visited.includes('gard')},
-  {num:5,title:'Havet svarer',       text:'Vemund lager ikke strømmen. Han styrer den. Her blir vennskapet med Oliver en del av kraften – og hemmeligheten kan endelig bæres av to.',                                                       unlock:s=>s.visited.includes('havn')&&s.path>=5},
+const KAPS=[
+  {n:1,ttl:'Stormen starter',   txt:'Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene. Noe er i ferd med å begynne.',                                                              ok:s=>true},
+  {n:2,ttl:'Sporene samles',    txt:'Oliver har tegnet et kart over blinkemønstrene. Fyret ser plutselig ikke tilfeldig ut. Vemund og Oliver begynner å forstå at øya snakker.',                                              ok:s=>s.vis.length>=2},
+  {n:3,ttl:'Hans sin skygge',   txt:'Hans har lagt merke til noe han ikke burde sett. Vemund må velge hva han avslører. Tilliten til Oliver avgjør neste trekk.',                                                            ok:s=>s.vis.includes('skole')||s.vis.includes('nabolag')},
+  {n:4,ttl:'Bodars hemmelighet',txt:'I skogen og på gården finnes regler eldre enn øya. Bodar vet hvilke. Vemund må lære dem før havet krever svar.',                                                                        ok:s=>s.vis.includes('skog')&&s.vis.includes('gard')},
+  {n:5,ttl:'Havet svarer',      txt:'Vemund lager ikke strømmen. Han styrer den. Vennskapet med Oliver blir en del av kraften – hemmeligheten kan endelig bæres av to.',                                                     ok:s=>s.vis.includes('havn')&&s.path>=5},
 ];
 
-const PLACES={
-  fyr:         {t:'Fyret',        type:'Hjem',           txt:'Vemund og morfaren bor ytterst mot havet. Lyset blinker selv når stormen tar strømmen.',              sec:'Morfaren sier at havet gir deg alt du trenger, men krever at du gir noe tilbake.',      pow:'Vemund kjenner strømmen i veggen. Tre blink blir til et mønster: kort, kort, langt.',    clue:'Fyret svarer alltid først når strømsporet begynner. Risiko: mye kraft, lett å miste kontroll.',         k:18},
-  nabolag:     {t:'Nabolaget',    type:'Fellesskap',     txt:'Alle kjenner alle. Rykter beveger seg raskere enn vinden.',                                           sec:'Oliver bor på høyre side av veien. Hans bor mellom nabolaget og skolen.',               pow:'En gatelykt slukker når Vemund puster for fort. Noen bak gardinen ser det.',             clue:'Nabolaget skjuler rykter, men også hvem som lyver. Risiko: rykter gjør Hans sterkere.',               k:12},
-  skole:       {t:'Skolen',       type:'Hverdag',        txt:'En liten skole der pauserommet kan føles større enn hele øya.',                                       sec:'Hans vil bestemme, men er også redd for å virke svak.',                                  pow:'Lysrørene dirrer over gangen. Vemund må velge mellom å skjule seg og å hjelpe noen.',   clue:'Hans er farligst når han føler seg liten. Risiko: for mye kraft avslører hemmeligheten.',              k:11},
-  ungdomsskole:{t:'Ungdomsskolen',type:'Konflikt',       txt:'Her presser Hans grensene. Oliver ser mer enn han sier.',                                             sec:'Hvis følelsene tar over, går sikringene for Vemund.',                                   pow:'En gammel radio begynner å skurre med Vemunds navn.',                                   clue:'Kompasset peker mot personen som bærer mest strøm. Risiko: Hans følger med på alt unormalt.',          k:14},
-  skog:        {t:'Skogen',       type:'Gamle historier',txt:'Tett skog midt på øya. Stier forsvinner og gamle historier sitter fast mellom trærne.',              sec:'Bodar kjenner gamle regler her. Jorda lyver ikke, men folk gjør.',                      pow:'Blå gnister løper langs våte røtter. En sti åpner seg og lukker seg igjen.',            clue:'Skogen kommer før gården når de gamle reglene våkner. Risiko: skogen liker ikke hastverk.',            k:24},
-  gard:        {t:'Gården',       type:'Bodar',          txt:'Bodar holder gården i hevd og lever tett på dyr, jord og tradisjoner.',                              sec:'Bodar sier lite, men ser potensialet i Vemund før Vemund ser det selv.',              pow:'Lamper i fjøset slår seg på i feil rekkefølge. Bodar teller blinkene uten å si et ord.',clue:'Bodar vet at jorda husker mer enn menneskene. Risiko: Bodar godtar bare ærlige svar.',                 k:20},
-  havn:        {t:'Båthavnen',    type:'Grense',         txt:'De har en båt, men forlater aldri øya. Ved brygga høres havet nesten ut som pust.',                  sec:'Kompasset peker ikke alltid nord. Noen ganger peker det mot Vemund.',                 pow:'Lanternene langs brygga tenner én etter én, som om noen ute i mørket svarer.',          clue:'Havet gir et svar først når båthavnen er besøkt. Risiko: havet hjelper bare den som gir noe tilbake.',k:17},
+const STEDER={
+  fyr:         {t:'Fyret',        ty:'Hjem',           d:'Vemund og morfaren bor ytterst mot havet. Lyset blinker selv når stormen tar strømmen.',              s:'Morfaren sier at havet gir deg alt du trenger, men krever at du gir noe tilbake.',     p:'Vemund kjenner strømmen i veggen. Tre blink: kort, kort, langt.',              c:'Fyret svarer alltid først når strømsporet begynner.',k:18},
+  nabolag:     {t:'Nabolaget',    ty:'Fellesskap',     d:'Alle kjenner alle. Rykter beveger seg raskere enn vinden.',                                           s:'Oliver bor på høyre side av veien. Hans bor mellom nabolaget og skolen.',            p:'En gatelykt slukker når Vemund puster for fort. Noen bak gardinen ser det.',   c:'Nabolaget skjuler rykter – og hvem som lyver.',      k:12},
+  skole:       {t:'Skolen',       ty:'Hverdag',        d:'En liten skole der pauserommet kan føles større enn hele øya.',                                       s:'Hans vil bestemme, men er redd for å virke svak.',                                  p:'Lysrørene dirrer. Vemund må velge mellom å skjule seg og hjelpe noen.',        c:'Hans er farligst når han føler seg liten.',          k:11},
+  ungdomsskole:{t:'Ungdomsskolen',ty:'Konflikt',       d:'Her presser Hans grensene. Oliver ser mer enn han sier.',                                             s:'Hvis følelsene tar over, går sikringene for Vemund.',                               p:'En gammel radio skurrer med Vemunds navn.',                                    c:'Kompasset peker mot den som bærer mest strøm.',      k:14},
+  skog:        {t:'Skogen',       ty:'Gamle historier',d:'Tett skog midt på øya. Stier forsvinner og gamle historier sitter fast mellom trærne.',              s:'Bodar kjenner gamle regler. Jorda lyver ikke, men folk gjør.',                      p:'Blå gnister løper langs våte røtter. En sti åpner og lukker seg.',             c:'Skogen kommer før gården når de gamle reglene våkner.',k:24},
+  gard:        {t:'Gården',       ty:'Bodar',          d:'Bodar holder gården i hevd og lever tett på dyr, jord og tradisjoner.',                              s:'Bodar sier lite, men ser potensialet i Vemund før Vemund ser det selv.',           p:'Lamper i fjøset slår seg på i feil rekkefølge. Bodar teller blinkene.',        c:'Bodar vet at jorda husker mer enn menneskene.',      k:20},
+  havn:        {t:'Båthavnen',    ty:'Grense',         d:'De har en båt, men forlater aldri øya. Ved brygga høres havet nesten ut som pust.',                  s:'Kompasset peker ikke alltid nord. Noen ganger peker det mot Vemund.',             p:'Lanternene langs brygga tenner én etter én, som om noen ute i mørket svarer.',c:'Havet gir svar først når båthavnen er besøkt.',      k:17},
 };
 
 const CHARS={
-  vemund:  {n:'Vemund',  r:'Gutten som styrer strømmen', i:'vemund',  txt:'14 år. Han kan skape, lede og stoppe elektrisitet – jo sterkere følelsene er, jo farligere er evnen.',                             act:'Vemund samler strømmen i stedet for å slippe den løs. Stormen mister grep.',  e:{storm:-5,calm:3,power:5},  f:{Evne:'Styrer elektrisitet',Styrke:'Modig og beskyttende',Svakhet:'Redd for å skade andre'}},
-  oliver:  {n:'Oliver',  r:'Planleggeren',                i:'oliver',  txt:'15 år. Vemunds bestevenn. Han ser sammenhenger andre overser og holder hodet kaldt.',                                               act:'Oliver tegner sporene på kartet. En låst oppgave blir lettere å skjønne.',    e:{trust:7,calm:4},           f:{Evne:'Strategi og mønstre',Styrke:'Lojal og observant',Svakhet:'Tar for mye ansvar'}},
-  morfaren:{n:'Morfaren',r:'Fyrets vokter',               i:'morfaren',txt:'62 år. Har voktet fyret i over 40 år. Kjenner havet bedre enn noen, men bærer på skyld.',                                          act:'Morfaren lærer Vemund å lese været før han leser strømmen.',                  e:{sea:8,calm:5,storm:-3},    f:{Yrke:'Fyrvokter',Styrke:'Uredd i storm',Drøm:'At Vemund en dag tar over fyret'}},
-  bodar:   {n:'Bodar',   r:'Den gamle regelen',           i:'bodar',   txt:'Ca. 65 år. Han kjenner skogen, jorda og hemmelighetene bedre enn de fleste.',                                                      act:'Bodar ber Vemund stoppe og observere. Det åpner et gammelt spor.',            e:{calm:6,keys:5},            f:{Bor:'Gården ved skogen',Styrke:'Praktisk og rettferdig',Regel:'Jorda lyver ikke. Men folk gjør.'}},
-  hans:    {n:'Hans',    r:'Antagonist',                  i:'hans',    txt:'15 år. Sterk, selvsikker og maktbevisst. Han mobber for å føle seg mektig og skjuler at han trenger beundring.',                   act:'Du studerer Hans uten å provosere. Han blir mindre uforutsigbar.',            e:{suspicion:-6,calm:2},      f:{Mål:'Være øverst',Styrke:'Tør å presse andre',Svakhet:'Redd for å virke svak'}},
+  vemund:  {n:'Vemund',  r:'Gutten som styrer strømmen', i:'vemund',  d:'14 år. Han kan skape, lede og stoppe elektrisitet – jo sterkere følelsene, jo farligere evnen.',                            a:'Vemund samler strømmen i stedet for å slippe den løs. Stormen mister grep.',  e:{storm:-5,calm:3,power:5},  f:{Evne:'Styrer elektrisitet',Styrke:'Modig og beskyttende',Svakhet:'Redd for å skade andre'}},
+  oliver:  {n:'Oliver',  r:'Planleggeren',                i:'oliver',  d:'15 år. Vemunds bestevenn. Han ser sammenhenger andre overser og holder hodet kaldt.',                                        a:'Oliver tegner sporene på kartet. En låst oppgave blir lettere å løse.',       e:{trust:7,calm:4},           f:{Evne:'Strategi og mønstre',Styrke:'Lojal og observant',Svakhet:'Tar for mye ansvar'}},
+  morfaren:{n:'Morfaren',r:'Fyrets vokter',               i:'morfaren',d:'62 år. Har voktet fyret i over 40 år. Kjenner havet bedre enn noen, men bærer på skyld.',                                   a:'Morfaren lærer Vemund å lese været før han leser strømmen.',                  e:{sea:8,calm:5,storm:-3},    f:{Yrke:'Fyrvokter',Styrke:'Uredd i storm',Drøm:'At Vemund en dag tar over fyret'}},
+  bodar:   {n:'Bodar',   r:'Den gamle regelen',           i:'bodar',   d:'Ca. 65 år. Kjenner skogen, jorda og hemmelighetene bedre enn de fleste.',                                                   a:'Bodar ber Vemund stoppe og observere. Det åpner et gammelt spor.',            e:{calm:6,keys:5},            f:{Bor:'Gården ved skogen',Styrke:'Praktisk og rettferdig',Regel:'Jorda lyver ikke. Men folk gjør.'}},
+  hans:    {n:'Hans',    r:'Antagonist',                  i:'hans',    d:'15 år. Sterk og maktbevisst. Han mobber for å føle seg mektig og skjuler at han trenger beundring.',                        a:'Du studerer Hans uten å provosere. Han blir mindre uforutsigbar.',            e:{suspicion:-6,calm:2},      f:{Mål:'Være øverst',Styrke:'Tør å presse andre',Svakhet:'Redd for å virke svak'}},
 };
 
-const PATH_ORDER=['fyr','skog','gard','havn','nabolag','skole'];
+const P2S={fyr:0,skole:1,skog:2,havn:3,gard:4};
 
 const SCENES=[
-  {p:'Fyret',     placeId:'fyr',  t:'Stormen banker på ruta',     x:'Lyset blinker feil. Morfaren later som han ikke er redd, men Vemund kjenner strømmen trekke i hendene.',c:[
-    {lbl:'Følge strømmen alene',         e:{power:12,calm:-9,suspicion:6},   r:'Vemund fant et nytt mønster, men pulsen gikk for fort.'},
-    {lbl:'Be Oliver tegne blinkene',     e:{trust:9,calm:4,power:4},         r:'Oliver tegnet blinkene som et kart. Plutselig så fyret mindre tilfeldig ut.'},
-    {lbl:'Spørre morfaren direkte',      e:{sea:8,calm:-2,suspicion:-3},     r:'Morfaren svarte kort. Havet hadde tatt mer enn han hadde fortalt.'},
+  {sted:'Fyret',     sid:'fyr',  t:'Stormen banker på ruta',     x:'Lyset blinker feil. Morfaren later som han ikke er redd, men Vemund kjenner strømmen trekke i hendene.',c:[
+    {l:'Følge strømmen alene',         e:{power:12,calm:-9,suspicion:6},   r:'Vemund fant et nytt mønster, men pulsen gikk for fort.'},
+    {l:'Be Oliver tegne blinkene',     e:{trust:9,calm:4,power:4},         r:'Oliver tegnet blinkene som et kart. Plutselig så fyret mindre tilfeldig ut.'},
+    {l:'Spørre morfaren direkte',      e:{sea:8,calm:-2,suspicion:-3},     r:'Morfaren svarte kort. Havet hadde tatt mer enn han hadde fortalt.'},
   ]},
-  {p:'Skolen',    placeId:'skole',t:'Hans presser fram et svar',   x:'Hans står for nær. Alle venter på at Vemund skal reagere. Strømmen hopper hvis han ikke holder seg rolig.',c:[
-    {lbl:'La Oliver snakke',             e:{trust:8,calm:7,suspicion:-4},    r:'Oliver tok ordet. Det kostet stolthet, men reddet hemmeligheten.'},
-    {lbl:'Skremme Hans med lyset',       e:{power:10,suspicion:14,calm:-12}, r:'Lyset knitret over taket. Hans rygget, men alle husket det.'},
-    {lbl:'Se hva Hans egentlig frykter', e:{calm:5,trust:3,suspicion:-2},    r:'Vemund så det lille rykket i blikket til Hans. Frykt, ikke bare sinne.'},
+  {sted:'Skolen',    sid:'skole',t:'Hans presser fram et svar',   x:'Hans står for nær. Alle venter på at Vemund skal reagere. Strømmen hopper hvis han mister roen.',c:[
+    {l:'La Oliver snakke',             e:{trust:8,calm:7,suspicion:-4},    r:'Oliver tok ordet. Det kostet stolthet, men reddet hemmeligheten.'},
+    {l:'Skremme Hans med lyset',       e:{power:10,suspicion:14,calm:-12}, r:'Lyset knitret over taket. Hans rygget, men alle husket det.'},
+    {l:'Se hva Hans egentlig frykter', e:{calm:5,trust:3,suspicion:-2},    r:'Vemund så det lille rykket i blikket til Hans. Frykt, ikke bare sinne.'},
   ]},
-  {p:'Skogen',    placeId:'skog', t:'Stien som flytter seg',       x:'Skogen er mørkere enn kartet sier. Noen stier åpner seg bare hvis man går inn med riktig grunn.',c:[
-    {lbl:'Følge kompasset mot Vemund',   e:{sea:7,power:4,calm:-3},          r:'Kompasset pekte mot Vemund, og likevel førte det dypere inn i skogen.'},
-    {lbl:'Lese spor i bakken',           e:{calm:8,sea:4},                   r:'Jorda var våt uten regn. Bodar hadde rett: bakken husker.'},
-    {lbl:'Lyse opp stien med strøm',     e:{power:9,calm:-6,suspicion:4},    r:'Trærne kastet blå skygger. Noe lenger inne svarte med samme lys.'},
+  {sted:'Skogen',    sid:'skog', t:'Stien som flytter seg',       x:'Skogen er mørkere enn kartet sier. Noen stier åpner seg bare hvis man går inn med riktig grunn.',c:[
+    {l:'Følge kompasset mot Vemund',   e:{sea:7,power:4,calm:-3},          r:'Kompasset pekte mot Vemund, og likevel førte det dypere inn.'},
+    {l:'Lese spor i bakken',           e:{calm:8,sea:4},                   r:'Jorda var våt uten regn. Bodar hadde rett: bakken husker.'},
+    {l:'Lyse opp stien med strøm',     e:{power:9,calm:-6,suspicion:4},    r:'Trærne kastet blå skygger. Noe lenger inne svarte med samme lys.'},
   ]},
-  {p:'Båthavnen', placeId:'havn', t:'Båten som ikke skal brukes',  x:'Tauverket knirker. Båten ligger klar, men morfaren har alltid sagt at de aldri forlater øya.',c:[
-    {lbl:'Teste motoren',                e:{sea:8,suspicion:5,calm:-4},      r:'Motoren hostet én gang. Ute i mørket blinket et lys tilbake.'},
-    {lbl:'Undersøke bunnen',             e:{keys:6,calm:4},                  r:'Under en løs planke lå tre gamle nøkler og et kartmerke.'},
-    {lbl:'Høre på havet',                e:{sea:10,storm:-5,calm:3},         r:'Havet svarte ikke med ord. Det svarte med rytme.'},
+  {sted:'Båthavnen', sid:'havn', t:'Båten som ikke skal brukes',  x:'Tauverket knirker. Båten ligger klar, men morfaren har alltid sagt at de aldri forlater øya.',c:[
+    {l:'Teste motoren',                e:{sea:8,suspicion:5,calm:-4},      r:'Motoren hostet én gang. Ute i mørket blinket et lys tilbake.'},
+    {l:'Undersøke bunnen',             e:{keys:6,calm:4},                  r:'Under en løs planke lå tre gamle nøkler og et kartmerke.'},
+    {l:'Høre på havet',                e:{sea:10,storm:-5,calm:3},         r:'Havet svarte ikke med ord. Det svarte med rytme.'},
   ]},
-  {p:'Gården',    placeId:'gard', t:'Bodars prøve',                x:'Bodar legger tre gjenstander på bordet: en nøkkel, en stein og en rusten sikring. Bare én forteller sannheten.',c:[
-    {lbl:'Velge nøkkelen',               e:{keys:8,calm:-1},                 r:'Nøkkelen var ekte, men ikke svaret. Bodar så likevel at du tenkte.'},
-    {lbl:'Velge steinen',                e:{calm:8,sea:3},                   r:'Steinen var våt på én side. Den hadde ligget ved havet, ikke på gården.'},
-    {lbl:'Velge sikringen',              e:{power:7,suspicion:-3},           r:'Sikringen var brent innenfra. Vemund kjente mønsteret.'},
+  {sted:'Gården',    sid:'gard', t:'Bodars prøve',                x:'Bodar legger tre gjenstander på bordet: nøkkel, stein og rusten sikring. Bare én forteller sannheten.',c:[
+    {l:'Velge nøkkelen',               e:{keys:8,calm:-1},                 r:'Nøkkelen var ekte, men ikke svaret. Bodar så likevel at du tenkte.'},
+    {l:'Velge steinen',                e:{calm:8,sea:3},                   r:'Steinen var våt på én side. Den hadde ligget ved havet, ikke gården.'},
+    {l:'Velge sikringen',              e:{power:7,suspicion:-3},           r:'Sikringen var brent innenfra. Vemund kjente mønsteret.'},
   ]},
 ];
 
-const PLACE_TO_SCENE={};
-SCENES.forEach((sc,i)=>{ PLACE_TO_SCENE[sc.placeId]=i; });
-
-const CHALLENGES=[
-  {id:'stromkode', t:'Strømkoden',       q:'Skriv første bokstav i hvert sted i strømsporet.',                     h:'Fyret, skogen, gården, båthavnen, nabolaget, skolen.',    u:s=>s.path>=3,    a:v=>clean(v)==='fsgbns',  r:'Du låste opp Strømmerker. Vemund kan følge en usynlig vei gjennom øya.'},
-  {id:'nokkelboks',t:'Nøkkelboksen',     q:'Hvor mange nøkler finnes i Vemunds gamle blikkboks?',                  h:'Svaret er et tall mellom 100 og 200.',                     u:s=>s.keys>=30,   a:v=>clean(v)==='147',     r:'Nøkkelboksen åpnet seg. Inni den høres havet.'},
-  {id:'hans',      t:'Hans sin svakhet', q:'Hva trenger Hans mest, selv om han later som han bare vil bestemme?',  h:'Svakheten handler ikke om muskler eller penger.',          u:s=>s.visited.includes('skole')||s.char==='hans', a:v=>['beundring','å bli beundret','bli beundret','respekt'].includes(words(v)), r:'Du forstår Hans bedre. Han er fortsatt farlig, men lettere å lese.'},
-  {id:'bodarregel',t:'Bodars regel',     q:'Bodar sier: «Jorda lyver ikke. Men folk ...»',                        h:'Lytt på gården eller åpne Bodar-kortet.',                 u:s=>s.visited.includes('skog')&&s.visited.includes('gard'), a:v=>['gjør','gjor'].includes(words(v)), r:'Bodar nikker. Det er nesten mer ros enn en lang tale.'},
-  {id:'kompass',   t:'Kompasset',        q:'Hva peker kompasset mot når det ikke peker nord?',                    h:'Båthavnen og ungdomsskolen gir samme svar.',               u:s=>s.visited.includes('havn')&&s.visited.includes('ungdomsskole'), a:v=>words(v)==='vemund', r:'Kompassnålen stopper. Den peker på Vemund, ikke på verden.'},
+const QUIZ=[
+  {id:'stromkode', t:'Strømkoden',       q:'Skriv første bokstav i hvert sted i strømsporet.',                     h:'Fyret, skogen, gården, båthavnen, nabolaget, skolen.',    ok:s=>s.path>=3,    a:v=>c(v)==='fsgbns',  r:'Du låste opp Strømmerker. Vemund kan følge en usynlig vei gjennom øya.'},
+  {id:'nokkelboks',t:'Nøkkelboksen',     q:'Hvor mange nøkler finnes i Vemunds gamle blikkboks?',                  h:'Svaret er et tall mellom 100 og 200.',                     ok:s=>s.keys>=30,   a:v=>c(v)==='147',     r:'Nøkkelboksen åpnet seg. Inni den høres havet.'},
+  {id:'hans',      t:'Hans sin svakhet', q:'Hva trenger Hans mest, selv om han later som han bare vil bestemme?',  h:'Svakheten handler ikke om muskler eller penger.',          ok:s=>s.vis.includes('skole')||s.char==='hans', a:v=>['beundring','å bli beundret','bli beundret','respekt'].includes(w(v)), r:'Du forstår Hans bedre. Han er fortsatt farlig, men lettere å lese.'},
+  {id:'bodarregel',t:'Bodars regel',     q:'Bodar sier: «Jorda lyver ikke. Men folk ...»',                        h:'Lytt på gården eller åpne Bodar-kortet.',                 ok:s=>s.vis.includes('skog')&&s.vis.includes('gard'), a:v=>['gjør','gjor'].includes(w(v)), r:'Bodar nikker. Det er nesten mer ros enn en lang tale.'},
+  {id:'kompass',   t:'Kompasset',        q:'Hva peker kompasset mot når det ikke peker nord?',                    h:'Båthavnen og ungdomsskolen gir samme svar.',               ok:s=>s.vis.includes('havn')&&s.vis.includes('ungdomsskole'), a:v=>w(v)==='vemund', r:'Kompassnålen stopper. Den peker på Vemund, ikke på verden.'},
 ];
 
-const MISSIONS=[
-  {id:'oliver',t:'Fortell Oliver sannheten',  x:'Velg Oliver og besøk fyret.',                    ico:'🤝',ok:s=>s.char==='oliver'&&s.visited.includes('fyr'),                 j:'fyr',  ch:'oliver'},
-  {id:'regel', t:'Finn den gamle regelen',    x:'Utforsk skogen og gården.',                      ico:'🌲',ok:s=>s.visited.includes('skog')&&s.visited.includes('gard'),       j:'skog', ch:'bodar'},
-  {id:'spor',  t:'Ro strømmen',               x:'Fullfør strømsporet i riktig rekkefølge.',       ico:'⚡',ok:s=>s.path>=PATH_ORDER.length,                                    j:'fyr',  ch:'vemund'},
-  {id:'hans',  t:'Forstå Hans',               x:'Løs gåten om Hans sin svakhet.',                 ico:'👁',ok:s=>s.solved.includes('hans'),                                    j:'skole',ch:'hans'},
-  {id:'havet', t:'Finn hva havet vil ha',     x:'Besøk båthavnen med Morfaren og lær av havet.', ico:'🌊',ok:s=>s.visited.includes('havn')&&s.char==='morfaren'&&s.sea>=50,  j:'havn', ch:'morfaren'},
+const MISS=[
+  {id:'oliver',t:'Fortell Oliver sannheten',  x:'Velg Oliver og besøk fyret.',                    ico:'🤝',ok:s=>s.char==='oliver'&&s.vis.includes('fyr'),               j:'fyr',  ch:'oliver'},
+  {id:'regel', t:'Finn den gamle regelen',    x:'Utforsk skogen og gården.',                      ico:'🌲',ok:s=>s.vis.includes('skog')&&s.vis.includes('gard'),         j:'skog', ch:'bodar'},
+  {id:'spor',  t:'Ro strømmen',               x:'Fullfør strømsporet i riktig rekkefølge.',       ico:'⚡',ok:s=>s.path>=[...Object.keys(STEDER)].length,               j:'fyr',  ch:'vemund'},
+  {id:'hans',  t:'Forstå Hans',               x:'Løs gåten om Hans sin svakhet.',                 ico:'👁',ok:s=>s.solved.includes('hans'),                              j:'skole',ch:'hans'},
+  {id:'havet', t:'Finn hva havet vil ha',     x:'Besøk båthavnen med Morfaren og lær av havet.', ico:'🌊',ok:s=>s.vis.includes('havn')&&s.char==='morfaren'&&s.sea>=50,j:'havn', ch:'morfaren'},
 ];
 
-/* STATE */
-const INIT={
+const PATH=['fyr','skog','gard','havn','nabolag','skole'];
+
+/* ════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════ */
+const I0={
   place:'fyr',char:'vemund',
-  visited:[],clues:[],solved:[],
-  log:['Stormen går utenfor. Fyret blinker likevel.'],
+  vis:[],solved:[],log:['Stormen går utenfor. Fyret blinker likevel.'],
   keys:0,storm:55,calm:58,trust:35,suspicion:25,sea:20,power:42,
-  path:0,sceneIdx:0,
-  sceneChoices:SCENES.map(()=>-1),
-  locResults:{},
-  theory:'',
+  path:0,scIdx:0,
+  sc:SCENES.map(()=>-1),
+  locR:{},theory:'',
 };
-
-let s={...INIT};
-const saved=JSON.parse(localStorage.getItem('oya-v4')||'null');
-if(saved){
-  s={...INIT,...saved};
-  s.visited   ||=[];s.clues   ||=[];s.solved   ||=[];
-  s.log       ||=[];s.locResults||={};
-  if(!s.sceneChoices||s.sceneChoices.length!==SCENES.length) s.sceneChoices=SCENES.map(()=>-1);
+let s={...I0};
+const sv=JSON.parse(localStorage.getItem('oya-v5')||'null');
+if(sv){
+  s={...I0,...sv};
+  s.vis||=[];s.solved||=[];s.log||=[];s.locR||={};
+  if(!Array.isArray(s.sc)||s.sc.length!==SCENES.length)s.sc=SCENES.map(()=>-1);
 }
 
-/* HELPERS */
+/* ════════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════════ */
 const $=q=>document.querySelector(q);
-const clean=v=>String(v).toLowerCase().replace(/[\s-]/g,'');
-const words=v=>String(v).toLowerCase().trim().replace(/\s+/g,' ');
+const c=v=>String(v).toLowerCase().replace(/[\s-]/g,'');
+const w=v=>String(v).toLowerCase().trim().replace(/\s+/g,' ');
 const cap=v=>Math.max(0,Math.min(100,v));
-
-function persist(){localStorage.setItem('oya-v4',JSON.stringify(s));}
-
+function persist(){localStorage.setItem('oya-v5',JSON.stringify(s));}
 function toast(msg){
   const el=$('#toast');el.textContent=msg;el.classList.add('show');
-  clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2400);
+  clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2600);
 }
-
 function note(x){if(!s.log.includes(x))s.log.unshift(x);s.log=s.log.slice(0,20);}
-
-function applyEffects(e={}){
+function fx(e={}){
   const d={storm:0,calm:0,trust:0,suspicion:0,sea:0,power:0,keys:0,...e};
   s.storm=cap(s.storm+d.storm);s.calm=cap(s.calm+d.calm);
   s.trust=cap(s.trust+d.trust);s.suspicion=cap(s.suspicion+d.suspicion);
   s.sea=cap(s.sea+d.sea);s.power=cap(s.power+d.power);
   s.keys=Math.min(147,s.keys+d.keys);
 }
-
 function loadImg(el,key){
-  const src=IMG[key];
-  if(!src){el.style.display='none';return;}
-  el.style.display='';
-  el.src=encodeURI(src);
+  const src=IMGS[key];if(!src){el.style.display='none';return;}
+  el.style.display='';el.src=encodeURI(src);
   el.onerror=()=>{el.style.display='none';};
 }
-
-/* ACTIONS */
-function visitPlace(id,mode='visit'){
-  const p=PLACES[id];
-  s.place=id;
-  if(!s.visited.includes(id)){
-    s.visited.push(id);
-    s.keys=Math.min(147,s.keys+p.k);
-    s.storm=cap(s.storm-4);
-    if(!s.clues.includes(id))s.clues.push(id);
-    note('Nytt sted besøkt: '+p.t+'.');
-  }
-  let result='';
-  if(mode==='listen'){
-    result=p.sec;s.calm=cap(s.calm+2);note(p.sec);toast('Spor funnet i '+p.t+'.');
-  }else if(mode==='power'){
-    result=p.pow;s.power=cap(s.power+6);s.storm=cap(s.storm+2);
-    if(['skole','ungdomsskole','nabolag'].includes(id))s.suspicion=cap(s.suspicion+4);
-    note(p.pow);toast('Strømmen reagerte.');
-  }else{
-    result=p.clue;toast(p.t+' utforsket.');
-  }
-  s.locResults[id+':'+mode]=result;
-  if(PATH_ORDER[s.path]===id){
-    s.path++;s.calm=cap(s.calm+5);s.storm=cap(s.storm-6);
-    note('Strømsporet svarte ved '+p.t.toLowerCase()+'.');
-  }else if(s.path>0&&s.path<PATH_ORDER.length){
-    s.storm=cap(s.storm+3);
-  }
-  if(PLACE_TO_SCENE[id]!==undefined)s.sceneIdx=PLACE_TO_SCENE[id];
-  persist();render();
-  setTimeout(()=>$('#scenePanel').scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+function scrollTo(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function makeChoice(scIdx,chIdx){
-  if(s.sceneChoices[scIdx]!==-1)return;
-  const ch=SCENES[scIdx].c[chIdx];
-  s.sceneChoices[scIdx]=chIdx;
-  applyEffects(ch.e);
-  s.keys=Math.min(147,s.keys+3);
-  note(ch.r);
-  if(s.suspicion>=75)note('Hans følger ekstra nøye med. Neste feil kan avsløre Vemund.');
+/* ════════════════════════════════════════════════════
+   ACTIONS
+════════════════════════════════════════════════════ */
+function goPlace(id,mode='visit'){
+  const p=STEDER[id];s.place=id;
+  const fresh=!s.vis.includes(id);
+  if(fresh){s.vis.push(id);s.keys=Math.min(147,s.keys+p.k);s.storm=cap(s.storm-4);}
+  let res='';
+  if(mode==='listen'){res=p.s;s.calm=cap(s.calm+2);note(p.s);toast('👂 Spor: '+p.t);}
+  else if(mode==='power'){
+    res=p.p;s.power=cap(s.power+6);s.storm=cap(s.storm+2);
+    if(['skole','ungdomsskole','nabolag'].includes(id))s.suspicion=cap(s.suspicion+4);
+    note(p.p);toast('⚡ Strømmen reagerte i '+p.t+'.');
+  }else{res=p.c;note(fresh?'Besøkt: '+p.t+'.':p.c);toast('🔍 '+p.t+' utforsket.');}
+  s.locR[id+mode]=res;
+  /* strømsporet */
+  if(PATH[s.path]===id){s.path++;s.calm=cap(s.calm+5);s.storm=cap(s.storm-6);note('Strømsporet: '+p.t+'.');}
+  else if(s.path>0&&s.path<PATH.length)s.storm=cap(s.storm+3);
+  /* bytt scene til stedet */
+  if(P2S[id]!==undefined)s.scIdx=P2S[id];
+  persist();render();
+  /* scroll ned til scene som ligger rett under stedene */
+  setTimeout(()=>scrollTo('sceneSection'),100);
+}
+
+function choose(scIdx,chIdx){
+  if(s.sc[scIdx]!==-1)return;
+  s.sc[scIdx]=chIdx;
+  fx(SCENES[scIdx].c[chIdx].e);s.keys=Math.min(147,s.keys+3);
+  note(SCENES[scIdx].c[chIdx].r);
+  if(s.suspicion>=75)note('Hans følger ekstra nøye med nå.');
   if(s.calm<=20)note('Vemund mister nesten kontrollen. Han trenger ro.');
-  toast('Valget ditt endret historien.');
+  toast('Valget endret historien.');
   persist();render();
 }
 
 function nextScene(){
-  s.sceneIdx=(s.sceneIdx+1)%SCENES.length;
-  note('Ny hendelse: '+SCENES[s.sceneIdx].t+'.');
+  s.scIdx=(s.scIdx+1)%SCENES.length;
+  note('Ny hendelse: '+SCENES[s.scIdx].t+'.');
   toast('Ny hendelse åpnet.');
-  persist();render();
+  persist();renderScene();renderStats();
 }
 
-function pickChar(id){
-  s.char=id;note(CHARS[id].n+' valgt.');persist();renderChars();
-}
+function pickChar(id){s.char=id;note(CHARS[id].n+' valgt.');persist();renderChars();}
 
 function useChar(){
-  const c=CHARS[s.char];applyEffects(c.e);note(c.act);
-  toast(c.n+' påvirket historien.');persist();render();
+  fx(CHARS[s.char].e);note(CHARS[s.char].a);
+  toast(CHARS[s.char].n+' påvirket historien.');persist();render();
 }
 
-function solveChallenge(id){
-  const c=CHALLENGES.find(x=>x.id===id);
-  const inp=$('[data-answer="'+id+'"]');
-  const fb=$('#fb-'+id);
-  if(!c||!inp)return;
-  if(c.a(inp.value)){
+function solveQ(id){
+  const q=QUIZ.find(x=>x.id===id);
+  const inp=$('[data-ans="'+id+'"]');
+  const fb=$('#fb'+id);
+  if(!q||!inp)return;
+  if(q.a(inp.value)){
     if(!s.solved.includes(id))s.solved.push(id);
     s.keys=Math.min(147,s.keys+10);s.calm=cap(s.calm+5);
-    note(c.r);toast('Gåte løst!');persist();render();
+    note(q.r);toast('Gåte løst! ✓');persist();render();
   }else{
-    if(fb)fb.textContent='Ikke helt riktig – sjekk hintet og prøv igjen.';
-    s.storm=cap(s.storm+2);toast('Prøv igjen.');persist();renderStats();
+    if(fb)fb.textContent='Ikke riktig – sjekk hintet.';
+    s.storm=cap(s.storm+2);persist();renderStats();
   }
 }
 
-/* RENDER */
+/* ════════════════════════════════════════════════════
+   RENDER
+════════════════════════════════════════════════════ */
 function renderStats(){
-  $('#sStorm').textContent=s.storm;$('#sRo').textContent=s.calm;
-  $('#sOliver').textContent=s.trust;$('#sHans').textContent=s.suspicion;
-  $('#sKeys').textContent=s.keys+'/147';
+  $('#vStorm').textContent=s.storm;$('#vRo').textContent=s.calm;
+  $('#vOliver').textContent=s.trust;$('#vHans').textContent=s.suspicion;
+  $('#vKeys').textContent=s.keys;
   $('#bStorm').style.width=s.storm+'%';$('#bRo').style.width=s.calm+'%';
   $('#bOliver').style.width=s.trust+'%';$('#bHans').style.width=s.suspicion+'%';
   $('#bKeys').style.width=(s.keys/147*100).toFixed(1)+'%';
 }
 
-function renderChapter(){
-  const ch=[...CHAPTERS].reverse().find(c=>c.unlock(s))||CHAPTERS[0];
-  $('#chapterPill').textContent='Kapittel '+ch.num+' av '+CHAPTERS.length;
-  $('#chapN').textContent='Kapittel '+ch.num;
-  $('#chapTitle').textContent=ch.title;
-  $('#chapText').textContent=ch.text;
+function renderKap(){
+  const k=[...KAPS].reverse().find(k=>k.ok(s))||KAPS[0];
+  $('#kapPill').textContent='Kapittel '+k.n+' av 5';
+  $('#kapN').textContent='Kapittel '+k.n;
+  $('#kapTtl').textContent=k.ttl;
+  $('#kapTxt').textContent=k.txt;
+}
+
+function renderLoc(){
+  const g=$('#locGrid');g.innerHTML='';
+  Object.entries(STEDER).forEach(([id,p])=>{
+    const vis=s.vis.includes(id),act=s.place===id;
+    const lastRes=s.locR[id+'visit']||s.locR[id+'listen']||s.locR[id+'power']||'';
+    const card=document.createElement('div');
+    card.className='loc-card'+(act?' active':'')+(vis?' visited':'');
+    card.innerHTML=`
+      <span class="loc-type">${p.ty}</span>
+      <span class="loc-name">${p.t}</span>
+      <span class="loc-prev">${p.d}</span>
+      <div class="loc-btns">
+        <button class="loc-btn primary" data-go="${id}" data-mode="visit">
+          <span class="loc-btn-ico">🔍</span>Utforsk
+        </button>
+        <button class="loc-btn" data-go="${id}" data-mode="listen">
+          <span class="loc-btn-ico">👂</span>Lytt
+        </button>
+        <button class="loc-btn" data-go="${id}" data-mode="power">
+          <span class="loc-btn-ico">⚡</span>Strøm
+        </button>
+      </div>
+      ${lastRes?`<div class="loc-res">${lastRes}</div>`:''}
+    `;
+    g.appendChild(card);
+  });
 }
 
 function renderScene(){
-  const sc=SCENES[s.sceneIdx];
-  const chosen=s.sceneChoices[s.sceneIdx];
-  $('#sceneTag').textContent=sc.p;
-  $('#sceneH').textContent=sc.t;
-  $('#sceneBody').textContent=sc.x;
-  const grid=$('#choicesEl');
-  grid.innerHTML='';
-  sc.c.forEach((ch,i)=>{
-    const btn=document.createElement('button');
-    btn.className='choice'+(chosen===i?' picked':'');
-    btn.textContent=ch.lbl;
-    if(chosen===-1)btn.onclick=()=>makeChoice(s.sceneIdx,i);
-    else btn.disabled=(chosen!==i);
-    grid.appendChild(btn);
+  const sc=SCENES[s.scIdx],chosen=s.sc[s.scIdx];
+  $('#sceneTag').textContent=sc.sted;
+  $('#sceneH3').textContent=sc.t;
+  $('#sceneBod').textContent=sc.x;
+  const ch=$('#choicesEl');ch.innerHTML='';
+  sc.c.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.className='ch-btn'+(chosen===i?' picked':'');
+    b.textContent=c.l;
+    if(chosen===-1)b.onclick=()=>choose(s.scIdx,i);
+    else b.disabled=(chosen!==i);
+    ch.appendChild(b);
   });
-  const res=$('#sceneResult');
+  const res=$('#sceneRes');
   if(chosen!==-1){res.textContent=sc.c[chosen].r;res.style.display='block';}
   else res.style.display='none';
 }
 
-function renderLocations(){
-  const grid=$('#locGrid');
-  grid.innerHTML='';
-  Object.entries(PLACES).forEach(([id,p])=>{
-    const visited=s.visited.includes(id);
-    const active=s.place===id;
-    const lastResult=s.locResults[id+':visit']||s.locResults[id+':listen']||s.locResults[id+':power']||'';
-    const card=document.createElement('div');
-    card.className='loc-card'+(active?' active':'')+(visited?' visited':'');
-    card.innerHTML=`
-      <span class="loc-type">${p.type}</span>
-      <span class="loc-name">${p.t}</span>
-      <span class="loc-preview">${p.txt}</span>
-      <div class="loc-actions">
-        <button class="loc-btn primary" data-act="visit"  data-id="${id}">Utforsk</button>
-        <button class="loc-btn"         data-act="listen" data-id="${id}">Lytt</button>
-        <button class="loc-btn"         data-act="power"  data-id="${id}">Strøm</button>
-      </div>
-      ${lastResult?`<div class="loc-result">${lastResult}</div>`:''}
-    `;
-    grid.appendChild(card);
-  });
-}
-
 function renderChars(){
-  const tabs=$('#charTabs');
-  tabs.innerHTML='';
-  Object.entries(CHARS).forEach(([id,c])=>{
-    const btn=document.createElement('button');
-    btn.className='char-tab'+(s.char===id?' active':'');
-    btn.textContent=c.n;
-    btn.onclick=()=>pickChar(id);
-    tabs.appendChild(btn);
+  const tabs=$('#charTabs');tabs.innerHTML='';
+  Object.entries(CHARS).forEach(([id,ch])=>{
+    const b=document.createElement('button');
+    b.className='char-tab'+(s.char===id?' active':'');
+    b.textContent=ch.n;b.onclick=()=>pickChar(id);
+    tabs.appendChild(b);
   });
-  const c=CHARS[s.char];
-  loadImg($('#charImg'),c.i);
-  $('#charImg').alt=c.n;
-  $('#charRole').textContent=c.r;
-  $('#charName').textContent=c.n;
-  $('#charText').textContent=c.txt;
-  const facts=$('#charFacts');
-  facts.innerHTML='';
-  Object.entries(c.f).forEach(([k,v])=>{
-    facts.insertAdjacentHTML('beforeend',`<span class="fact-k">${k}</span><span class="fact-v">${v}</span>`);
+  const ch=CHARS[s.char];
+  loadImg($('#charImg'),ch.i);$('#charImg').alt=ch.n;
+  $('#charRole').textContent=ch.r;$('#charName').textContent=ch.n;
+  $('#charTxt').textContent=ch.d;
+  const facts=$('#charFacts');facts.innerHTML='';
+  Object.entries(ch.f).forEach(([k,v])=>{
+    facts.insertAdjacentHTML('beforeend',`<span class="fk">${k}</span><span class="fv">${v}</span>`);
   });
-  $('#useCharBtn').textContent='Bruk '+c.n;
+  $('#useBtn').textContent='Bruk '+ch.n;
 }
 
 function renderQuiz(){
-  const grid=$('#quizGrid');
-  grid.innerHTML='';
-  CHALLENGES.forEach(c=>{
-    const unlocked=c.u(s);const solved=s.solved.includes(c.id);
+  const g=$('#quizGrid');g.innerHTML='';
+  QUIZ.forEach(q=>{
+    const unl=q.ok(s),sol=s.solved.includes(q.id);
     const div=document.createElement('div');
-    div.className='quiz-card'+(solved?' solved':'')+(unlocked?'':' locked');
-    if(!unlocked){
-      div.innerHTML=`<span class="quiz-tag">Låst</span><h3>${c.t}</h3><p>Besøk flere steder for å låse opp denne oppgaven.</p>`;
-    }else if(solved){
-      div.innerHTML=`<span class="quiz-tag">Løst ✓</span><h3>${c.t}</h3><p>${c.r}</p>`;
+    div.className='quiz-card'+(sol?' solved':'')+(unl?'':' locked');
+    if(!unl){
+      div.innerHTML=`<span class="q-tag">Låst</span><h3>${q.t}</h3><p>Besøk flere steder for å låse opp.</p>`;
+    }else if(sol){
+      div.innerHTML=`<span class="q-tag">Løst ✓</span><h3>${q.t}</h3><p>${q.r}</p>`;
     }else{
       div.innerHTML=`
-        <span class="quiz-tag">Uløst</span>
-        <h3>${c.t}</h3>
-        <p class="quiz-q">${c.q}</p>
-        <details><summary>Hint</summary><p>${c.h}</p></details>
+        <span class="q-tag">Uløst</span><h3>${q.t}</h3>
+        <p class="q-txt">${q.q}</p>
+        <details><summary>Hint</summary><p>${q.h}</p></details>
         <div class="ans-row">
-          <input data-answer="${c.id}" placeholder="Skriv svar her">
-          <button class="solve-btn" data-solve="${c.id}">Sjekk</button>
+          <input data-ans="${q.id}" placeholder="Skriv svar her" autocomplete="off">
+          <button class="solve-btn" data-sol="${q.id}">Sjekk</button>
         </div>
-        <div class="quiz-fb" id="fb-${c.id}"></div>
+        <div class="q-fb" id="fb${q.id}"></div>
       `;
     }
-    grid.appendChild(div);
+    g.appendChild(div);
   });
 }
 
-function renderMissions(){
-  const grid=$('#missionGrid');
-  grid.innerHTML='';
-  MISSIONS.forEach(m=>{
+function renderMiss(){
+  const g=$('#missGrid');g.innerHTML='';
+  MISS.forEach(m=>{
     const done=m.ok(s);
     const div=document.createElement('div');
-    div.className='mission-card'+(done?' done':'');
+    div.className='miss-card'+(done?' done':'');
     div.innerHTML=`
-      <div class="mission-ico">${m.ico}</div>
+      <div class="miss-ico">${m.ico}</div>
       <div>
-        <h3>${m.t}</h3>
-        <p>${m.x}</p>
-        <button class="mission-go" data-mission="${m.id}">${done?'Fullført ✓':'Gå til oppdrag'}</button>
+        <h3>${m.t}</h3><p>${m.x}</p>
+        <button class="miss-go" data-miss="${m.id}">${done?'Fullført ✓':'Gå til oppdrag'}</button>
       </div>
     `;
-    grid.appendChild(div);
+    g.appendChild(div);
   });
 }
 
@@ -720,34 +753,39 @@ function renderLog(){
 function renderTheory(){if(document.activeElement!==$('#theory'))$('#theory').value=s.theory||'';}
 
 function render(){
-  renderStats();renderChapter();renderScene();renderLocations();
-  renderChars();renderQuiz();renderMissions();renderLog();renderTheory();
+  renderStats();renderKap();renderLoc();renderScene();
+  renderChars();renderQuiz();renderMiss();renderLog();renderTheory();
 }
 
-/* EVENTS */
+/* ════════════════════════════════════════════════════
+   EVENTS — event delegation for all dynamic buttons
+════════════════════════════════════════════════════ */
 document.addEventListener('click',e=>{
-  const t=e.target;
-  if(t.dataset.act&&t.dataset.id)visitPlace(t.dataset.id,t.dataset.act);
-  if(t.dataset.solve)solveChallenge(t.dataset.solve);
-  if(t.dataset.mission){
-    const m=MISSIONS.find(x=>x.id===t.dataset.mission);
-    if(m){s.char=m.ch;visitPlace(m.j);}
+  const t=e.target.closest('[data-go],[data-sol],[data-miss]')||e.target;
+  if(t.dataset.go)   goPlace(t.dataset.go, t.dataset.mode||'visit');
+  if(t.dataset.sol)  solveQ(t.dataset.sol);
+  if(t.dataset.miss){
+    const m=MISS.find(x=>x.id===t.dataset.miss);
+    if(m){s.char=m.ch;goPlace(m.j);}
   }
 });
 document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.dataset.answer)solveChallenge(e.target.dataset.answer);
+  if(e.key==='Enter'&&e.target.dataset.ans)solveQ(e.target.dataset.ans);
 });
-$('#nextSceneBtn').onclick=nextScene;
-$('#useCharBtn').onclick=useChar;
+
+$('#nextBtn').onclick=nextScene;
+$('#useBtn').onclick=useChar;
 $('#theory').oninput=e=>{s.theory=e.target.value;persist();};
-$('#saveBtn').onclick=()=>{persist();note('Fremdriften er lagret.');renderLog();toast('Lagret!');};
+$('#saveBtn').onclick=()=>{persist();note('Lagret.');renderLog();toast('Lagret ✓');};
 $('#resetBtn').onclick=()=>{
-  if(confirm('Start spillet helt på nytt? All fremdrift slettes.')){
-    localStorage.removeItem('oya-v4');location.reload();
+  if(confirm('Start helt på nytt? All fremdrift slettes.')){
+    localStorage.removeItem('oya-v5');location.reload();
   }
 };
-$('#dlgClose').onclick=()=>$('#dlg').close();
 
+/* ════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════ */
 persist();
 render();
 </script>
