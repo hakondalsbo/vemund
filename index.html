@@ -7,787 +7,717 @@
 <style>
 :root{
   --gold:#f1bd71;--paper:#e8cda1;--text:#fff1d6;--muted:#c0a880;
-  --line:rgba(232,205,161,.2);--blue:#7bd8ff;--panel:rgba(11,26,31,.93);
+  --line:rgba(232,205,161,.22);--blue:#7bd8ff;--panel:rgba(11,26,31,.92);
+  --ink:#2a2216;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html{font-size:16px;}
+html{font-size:16px;scroll-behavior:smooth;}
 body{
   background:linear-gradient(160deg,#04090c,#0d1f27 55%,#061116);
-  color:var(--text);font-family:Trebuchet MS,Verdana,sans-serif;min-height:100vh;
-  -webkit-text-size-adjust:100%;
+  background-attachment:fixed;
+  color:var(--text);font-family:"Georgia","Times New Roman",serif;min-height:100vh;
+  -webkit-text-size-adjust:100%;overflow-x:hidden;
 }
-/* prevent double-tap zoom on all interactive elements */
-button,a,input,textarea,select{touch-action:manipulation;font:inherit;}
+button,a{touch-action:manipulation;font:inherit;color:inherit;cursor:pointer;}
+img{max-width:100%;display:block;}
 
-/* ── HEADER ─────────────────────────────────────────── */
+/* ── HEADER ─────────────────────────── */
 .hdr{
-  position:sticky;top:0;z-index:30;
-  display:flex;align-items:center;gap:8px;padding:9px 14px;
-  background:rgba(4,9,12,.97);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  background:rgba(4,9,12,.96);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);min-height:56px;
 }
-.hdr-mid{flex:1;text-align:center;}
-.kap-pill{
-  display:inline-block;padding:2px 10px;border-radius:20px;
-  border:1px solid rgba(241,189,113,.4);background:rgba(241,189,113,.09);
-  color:var(--gold);font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;
-  margin-bottom:2px;
-}
-.site-ttl{font-size:clamp(1.4rem,5vw,2rem);line-height:1;letter-spacing:-.02em;}
-.icon-btn{
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+.hdr .back{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
   border:1px solid var(--line);background:rgba(255,255,255,.06);
-  color:var(--text);cursor:pointer;font-size:1.05rem;
-  display:flex;align-items:center;justify-content:center;
+  display:none;align-items:center;justify-content:center;font-size:1.2rem;
 }
-.icon-btn:active{background:rgba(241,189,113,.15);}
+.hdr.sub .back{display:flex;}
+.hdr .back:active{background:rgba(241,189,113,.18);}
+.hdr-mid{flex:1;text-align:center;overflow:hidden;}
+.hdr-kicker{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.8;}
+.hdr-ttl{font-family:"Trebuchet MS",Verdana,sans-serif;font-size:1.1rem;line-height:1.1;letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hdr .spacer{width:42px;flex-shrink:0;}
 
-/* ── WRAPPER ─────────────────────────────────────────── */
-.app{width:min(920px,100%);margin:auto;padding:12px 12px 50px;}
+/* ── VIEWS ─────────────────────────── */
+.view{display:none;animation:fade .45s ease;}
+.view.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.wrap{width:min(760px,100%);margin:auto;padding:16px 14px 70px;}
 
-/* ── STATS ───────────────────────────────────────────── */
-.stats{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
-  padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:16px;
+/* ── HOME ─────────────────────────── */
+.hero{
+  position:relative;border-radius:18px;overflow:hidden;margin-bottom:18px;
+  border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.5);
 }
-.st{text-align:center;}
-.st-lbl{display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:1px;}
-.st-desc{display:block;font-size:.5rem;color:var(--muted);margin-bottom:3px;line-height:1.2;}
-.st-val{display:block;font-size:.95rem;font-weight:700;margin-bottom:4px;}
-.sbar{height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
-.sfill{height:100%;border-radius:2px;transition:width .5s;}
-.s-storm{background:linear-gradient(90deg,#ff6b3a,#dd2020);}
-.s-ro   {background:linear-gradient(90deg,#38b4ff,#7bd8ff);}
-.s-oliv {background:linear-gradient(90deg,#44ff88,#22cc66);}
-.s-hans {background:linear-gradient(90deg,#aa66ff,#7733ee);}
-.s-keys {background:linear-gradient(90deg,#f1bd71,#d4881a);}
+.hero img{width:100%;height:230px;object-fit:cover;object-position:center 42%;}
+.hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(4,9,12,.15) 0%,rgba(4,9,12,.35) 45%,rgba(4,9,12,.96) 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:18px;
+}
+.hero-kicker{font-family:"Trebuchet MS",sans-serif;font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);}
+.hero h1{font-family:"Trebuchet MS",sans-serif;font-size:clamp(2.6rem,14vw,4rem);line-height:.9;letter-spacing:.02em;
+  text-shadow:0 4px 18px rgba(0,0,0,.7);margin:2px 0 4px;}
+.hero p{font-size:.95rem;color:var(--paper);max-width:32ch;}
 
-/* ── SECTION HEADER ──────────────────────────────────── */
-.sec-lbl{display:block;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:4px;}
-h2{font-size:clamp(1.05rem,4vw,1.4rem);margin-bottom:10px;line-height:1.1;}
-h3{font-size:.95rem;margin-bottom:5px;}
-p{color:var(--muted);line-height:1.55;font-size:.88rem;}
-section{margin-bottom:24px;}
+.progress-strip{
+  display:flex;align-items:center;gap:12px;
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;margin-bottom:18px;
+}
+.pbadge{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  background:radial-gradient(circle,rgba(241,189,113,.18),rgba(241,189,113,.04));
+  border:1px solid rgba(241,189,113,.4);
+}
+.progress-strip .pt{flex:1;}
+.progress-strip .pt b{font-family:"Trebuchet MS",sans-serif;font-size:.95rem;color:var(--gold);}
+.progress-strip .pt span{display:block;font-size:.8rem;color:var(--muted);margin-top:2px;}
+.progress-strip .cont{
+  background:var(--gold);color:#1a1206;font-family:"Trebuchet MS",sans-serif;font-weight:bold;
+  border:none;border-radius:10px;padding:9px 13px;font-size:.82rem;white-space:nowrap;
+}
+.progress-strip .cont:active{transform:scale(.96);}
 
-/* ── CHAPTER CARD ────────────────────────────────────── */
-.kap-card{
-  position:relative;overflow:hidden;
-  border:1px solid rgba(241,189,113,.38);
-  background:linear-gradient(135deg,rgba(11,26,31,.98),rgba(6,14,20,.98));
-  padding:18px;margin-bottom:18px;
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tile{
+  position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+  min-height:118px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:14px;text-align:left;
+  background:linear-gradient(160deg,rgba(20,40,48,.9),rgba(8,18,22,.95));
+  transition:transform .15s,border-color .2s;
 }
-.kap-card::after{
-  content:'';position:absolute;right:-24px;top:-24px;
-  width:140px;height:140px;border-radius:50%;
-  background:radial-gradient(circle,rgba(241,189,113,.1),transparent 70%);
-  pointer-events:none;
-}
-.kap-n{font-size:.62rem;text-transform:uppercase;color:var(--gold);letter-spacing:.1em;margin-bottom:3px;}
-.kap-ttl{font-size:clamp(1.15rem,5vw,1.6rem);margin-bottom:8px;line-height:1.1;}
-.kap-txt{color:var(--muted);line-height:1.6;font-size:.88rem;}
+.tile:active{transform:scale(.97);border-color:var(--gold);}
+.tile.big{grid-column:1 / -1;min-height:96px;}
+.tile .ico{font-size:1.9rem;margin-bottom:6px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+.tile .tt{font-family:"Trebuchet MS",sans-serif;font-size:1.05rem;color:var(--text);letter-spacing:.01em;}
+.tile .ts{font-size:.76rem;color:var(--muted);margin-top:3px;}
+.tile .arrow{position:absolute;top:14px;right:14px;color:var(--gold);opacity:.55;font-size:1.1rem;}
+.tile.big{flex-direction:row;align-items:center;gap:14px;}
+.tile.big .ico{margin:0;}
+.tile.big .txt{flex:1;}
 
-/* ── LOCATION GRID ───────────────────────────────────── */
-.loc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
-.loc-card{
-  border:1px solid var(--line);background:var(--panel);
-  padding:12px;position:relative;
-  transition:border-color .18s,background .18s;
+/* ── STORY LIST ─────────────────────────── */
+.sect-h{font-family:"Trebuchet MS",sans-serif;font-size:1.35rem;color:var(--gold);margin:4px 0 4px;}
+.sect-sub{font-size:.9rem;color:var(--muted);margin-bottom:18px;}
+.chap-card{
+  display:flex;gap:14px;align-items:stretch;
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  overflow:hidden;margin-bottom:14px;transition:transform .15s,border-color .2s;
 }
-.loc-card.active{border-color:var(--gold);background:rgba(241,189,113,.09);}
-.loc-card.visited .loc-name::after{
-  content:' ✓';color:var(--blue);font-size:.7em;
+.chap-card:active{transform:scale(.985);border-color:var(--gold);}
+.chap-num{
+  width:74px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,rgba(241,189,113,.16),rgba(241,189,113,.03));
+  border-right:1px solid var(--line);
 }
-.loc-type{display:block;font-size:.58rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;margin-bottom:2px;}
-.loc-name{display:block;font-size:.9rem;font-weight:700;margin-bottom:5px;}
-.loc-prev{font-size:.74rem;color:var(--muted);line-height:1.35;margin-bottom:8px;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.loc-btns{display:flex;gap:4px;}
-.loc-btn{
-  flex:1;min-height:44px;padding:6px 4px;font-size:.72rem;
-  border:1px solid var(--line);background:rgba(232,205,161,.06);
-  color:var(--text);cursor:pointer;border-radius:2px;text-align:center;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  transition:border-color .18s,background .18s;line-height:1.2;
-}
-.loc-btn:active{background:rgba(241,189,113,.18);border-color:var(--gold);}
-.loc-btn.primary{background:rgba(241,189,113,.12);border-color:rgba(241,189,113,.3);}
-.loc-btn-ico{font-size:.9rem;}
+.chap-num .k{font-size:.58rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;font-family:"Trebuchet MS",sans-serif;}
+.chap-num .n{font-family:"Trebuchet MS",sans-serif;font-size:2.4rem;line-height:1;color:var(--gold);}
+.chap-body{flex:1;padding:14px 14px 14px 4px;min-width:0;}
+.chap-body h3{font-family:"Trebuchet MS",sans-serif;font-size:1.15rem;margin-bottom:5px;}
+.chap-body p{font-size:.85rem;color:var(--muted);line-height:1.45;}
+.chap-meta{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:.72rem;font-family:"Trebuchet MS",sans-serif;}
+.chap-meta .read{color:#8fe39a;}
+.chap-meta .unread{color:var(--muted);}
+.chap-meta .dot{width:4px;height:4px;border-radius:50%;background:var(--muted);}
 
-/* ── SCENE PANEL ─────────────────────────────────────── */
-.scene-wrap{
-  border:1px solid rgba(123,216,255,.25);
-  background:rgba(8,20,27,.97);
-  padding:16px;margin-bottom:24px;
+/* ── READER ─────────────────────────── */
+.reader-head{margin-bottom:6px;}
+.reader-head .k{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-family:"Trebuchet MS",sans-serif;}
+.reader-head h2{font-family:"Trebuchet MS",sans-serif;font-size:clamp(1.7rem,7vw,2.3rem);line-height:1.02;margin:4px 0 2px;}
+.reader-head .meta{font-size:.78rem;color:var(--muted);}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:16px 0 20px;}
+.prose p{font-size:1.06rem;line-height:1.72;margin-bottom:1.05em;color:var(--text);}
+.prose p.dlg{color:var(--paper);padding-left:14px;border-left:2px solid rgba(241,189,113,.3);font-style:italic;}
+.prose p.first::first-letter{
+  font-family:"Trebuchet MS",sans-serif;float:left;font-size:3.4rem;line-height:.8;
+  padding:4px 10px 0 0;color:var(--gold);font-weight:bold;
 }
-.scene-tag{display:block;font-size:.62rem;text-transform:uppercase;color:var(--blue);letter-spacing:.07em;margin-bottom:5px;}
-.scene-h{font-size:1.05rem;margin-bottom:8px;line-height:1.2;}
-.scene-bod{font-size:.86rem;color:var(--muted);line-height:1.55;margin-bottom:4px;}
-.choices{display:grid;gap:7px;margin-top:12px;}
-.ch-btn{
-  text-align:left;min-height:52px;padding:11px 13px;
-  border:1px solid var(--line);background:rgba(232,205,161,.06);
-  color:var(--text);cursor:pointer;font-size:.86rem;border-radius:3px;
-  line-height:1.4;transition:border-color .18s,background .18s;
+.prose figure{margin:24px -4px;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  box-shadow:0 10px 30px rgba(0,0,0,.5);cursor:zoom-in;position:relative;}
+.prose figure img{width:100%;}
+.prose figure figcaption{font-size:.76rem;color:var(--muted);text-align:center;padding:8px 12px;
+  background:rgba(4,9,12,.6);font-family:"Trebuchet MS",sans-serif;}
+.prose figure .zoomhint{position:absolute;top:8px;right:8px;background:rgba(4,9,12,.7);
+  border:1px solid var(--line);border-radius:20px;font-size:.62rem;padding:3px 9px;color:var(--paper);
+  font-family:"Trebuchet MS",sans-serif;}
+.chap-end{text-align:center;margin:30px 0 10px;color:var(--gold);font-family:"Trebuchet MS",sans-serif;letter-spacing:.3em;font-size:.8rem;}
+.read-btn{
+  display:block;width:100%;margin:18px 0 8px;padding:14px;border-radius:12px;
+  border:1px solid rgba(241,189,113,.5);background:rgba(241,189,113,.1);
+  color:var(--gold);font-family:"Trebuchet MS",sans-serif;font-size:1rem;
 }
-.ch-btn:active:not(:disabled){background:rgba(241,189,113,.15);border-color:var(--gold);}
-.ch-btn.picked{border-color:rgba(123,216,255,.45);background:rgba(123,216,255,.08);color:var(--muted);cursor:default;}
-.ch-btn:disabled{opacity:.38;cursor:default;}
-.scene-res{
-  margin-top:12px;padding:10px 13px;
-  border-left:3px solid var(--gold);background:rgba(241,189,113,.07);
-  color:var(--paper);font-size:.87rem;line-height:1.55;
+.read-btn.done{background:rgba(143,227,154,.12);border-color:rgba(143,227,154,.5);color:#8fe39a;}
+.read-btn:active{transform:scale(.98);}
+.reader-nav{display:flex;gap:10px;margin-top:14px;}
+.reader-nav button{
+  flex:1;padding:12px;border-radius:11px;border:1px solid var(--line);
+  background:rgba(255,255,255,.05);font-family:"Trebuchet MS",sans-serif;font-size:.9rem;
 }
-.next-btn{
-  margin-top:10px;width:100%;min-height:44px;padding:10px;
-  border:1px solid var(--line);background:rgba(255,255,255,.05);
-  color:var(--muted);cursor:pointer;font-size:.84rem;
-  transition:border-color .18s,color .18s;
-}
-.next-btn:active{border-color:var(--gold);color:var(--text);}
+.reader-nav button:disabled{opacity:.32;}
+.reader-nav button:active:not(:disabled){background:rgba(241,189,113,.14);}
 
-/* ── LOC RESULT ──────────────────────────────────────── */
-.loc-res{
-  margin-top:8px;padding:8px 10px;
-  border-left:2px solid var(--gold);background:rgba(241,189,113,.06);
-  font-size:.76rem;color:var(--paper);line-height:1.5;
+/* ── CHARACTERS ─────────────────────────── */
+.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.char-cell{
+  border-radius:15px;overflow:hidden;border:1px solid var(--line);
+  background:var(--panel);transition:transform .15s,border-color .2s;position:relative;
 }
+.char-cell:active{transform:scale(.97);border-color:var(--gold);}
+.char-cell .ph{aspect-ratio:1/1;overflow:hidden;background:#0a1418;}
+.char-cell .ph img{width:100%;height:100%;object-fit:cover;object-position:center 18%;}
+.char-cell .lbl{padding:9px 11px 12px;}
+.char-cell .lbl .nm{font-family:"Trebuchet MS",sans-serif;font-size:1.05rem;color:var(--gold);}
+.char-cell .lbl .rl{font-size:.74rem;color:var(--muted);margin-top:2px;line-height:1.3;}
+.char-cell .expand{position:absolute;top:8px;right:8px;background:rgba(4,9,12,.72);
+  border:1px solid var(--line);border-radius:50%;width:26px;height:26px;display:flex;
+  align-items:center;justify-content:center;font-size:.85rem;color:var(--paper);}
+.mini-row{display:flex;gap:12px;margin-top:16px;}
+.mini{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 13px;}
+.mini .mi{font-size:1.5rem;}
+.mini .mn{font-family:"Trebuchet MS",sans-serif;font-size:.98rem;color:var(--gold);margin-top:4px;}
+.mini .md{font-size:.76rem;color:var(--muted);line-height:1.4;margin-top:3px;}
 
-/* ── CHARACTERS ──────────────────────────────────────── */
-.char-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.char-tab{
-  min-height:40px;padding:7px 13px;
-  border:1px solid var(--line);background:transparent;
-  color:var(--muted);cursor:pointer;font-size:.82rem;border-radius:20px;
-  transition:all .18s;
-}
-.char-tab.active{background:rgba(232,205,161,.12);border-color:var(--gold);color:var(--text);}
-.char-tab:active{background:rgba(241,189,113,.15);}
-.char-card{border:1px solid var(--line);background:var(--panel);overflow:hidden;}
-.char-img{
-  width:100%;display:block;max-height:200px;object-fit:cover;
-  background:rgba(11,26,31,.9);
-}
-.char-body{padding:14px;}
-.char-role{font-size:.62rem;text-transform:uppercase;color:var(--gold);letter-spacing:.07em;}
-.char-name{font-size:1.2rem;margin:3px 0 8px;}
-.char-facts{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0;}
-.fk{color:var(--gold);font-size:.77rem;}
-.fv{color:var(--muted);font-size:.77rem;}
-.use-btn{
-  width:100%;min-height:48px;padding:11px;margin-top:10px;
-  border:1px solid rgba(241,189,113,.35);background:rgba(241,189,113,.1);
-  color:var(--text);cursor:pointer;font-size:.9rem;
-  transition:background .18s;
-}
-.use-btn:active{background:rgba(241,189,113,.22);}
+/* ── MAP VIEW ─────────────────────────── */
+.map-frame{border-radius:16px;overflow:hidden;border:1px solid var(--line);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);cursor:zoom-in;position:relative;}
+.map-frame img{width:100%;}
+.map-note{font-size:.86rem;color:var(--muted);line-height:1.55;margin-top:16px;
+  background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px;}
+.map-note b{color:var(--paper);font-family:"Trebuchet MS",sans-serif;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
+.stat-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center;}
+.stat-box .v{font-family:"Trebuchet MS",sans-serif;font-size:1.7rem;color:var(--gold);line-height:1;}
+.stat-box .l{font-size:.66rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:5px;}
 
-/* ── ANIMALS ─────────────────────────────────────────── */
-.animal-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;}
-.a-tag{
-  padding:6px 11px;border:1px solid var(--line);
-  background:rgba(11,26,31,.8);font-size:.79rem;
-  color:var(--muted);border-radius:20px;
-}
+/* ── LIGHTBOX ─────────────────────────── */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(2,5,7,.97);display:none;
+  flex-direction:column;}
+.lb.open{display:flex;}
+.lb-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;flex-shrink:0;}
+.lb-bar .t{font-family:"Trebuchet MS",sans-serif;font-size:.9rem;color:var(--gold);}
+.lb-bar button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.06);font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
+.lb-scroll{flex:1;overflow:auto;padding:0 10px 20px;-webkit-overflow-scrolling:touch;}
+.lb-scroll img{margin:auto;border-radius:8px;}
+.lb-scroll img.fit{width:100%;max-width:640px;}
+.lb-scroll img.full{width:auto;max-width:none;}
+.lb-hint{text-align:center;font-size:.74rem;color:var(--muted);padding:8px;font-family:"Trebuchet MS",sans-serif;}
 
-/* ── QUIZ ─────────────────────────────────────────────── */
-.quiz-grid{display:grid;gap:8px;}
-.quiz-card{border:1px solid var(--line);background:var(--panel);padding:14px;}
-.quiz-card.solved{border-color:rgba(123,216,255,.35);background:rgba(123,216,255,.06);}
-.quiz-card.locked{opacity:.55;}
-.q-tag{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:5px;}
-.q-txt{color:var(--muted);font-size:.86rem;line-height:1.5;margin-bottom:5px;}
-details{margin:5px 0;}
-details summary{cursor:pointer;color:var(--gold);font-size:.8rem;padding:4px 0;}
-details p{font-size:.8rem;padding-top:3px;}
-.ans-row{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:9px;}
-/* 16px font-size on input prevents iOS auto-zoom */
-.ans-row input{
-  padding:10px 12px;border:1px solid var(--line);
-  background:rgba(255,255,255,.07);color:var(--text);
-  font-size:1rem;border-radius:2px;
-}
-.solve-btn{
-  min-height:44px;padding:0 14px;
-  border:1px solid rgba(241,189,113,.45);background:rgba(241,189,113,.1);
-  color:var(--text);cursor:pointer;white-space:nowrap;font-size:.86rem;
-}
-.solve-btn:active{background:rgba(241,189,113,.22);}
-.q-fb{font-size:.77rem;color:var(--gold);margin-top:4px;min-height:1rem;}
-
-/* ── MISSIONS ────────────────────────────────────────── */
-.miss-grid{display:grid;gap:8px;}
-.miss-card{border:1px solid var(--line);background:var(--panel);padding:14px;display:flex;gap:11px;align-items:flex-start;}
-.miss-card.done{border-color:rgba(123,216,255,.35);background:rgba(123,216,255,.06);}
-.miss-ico{font-size:1.25rem;flex-shrink:0;padding-top:2px;}
-.miss-go{
-  margin-top:7px;min-height:44px;padding:0 13px;
-  border:1px solid var(--line);background:rgba(241,189,113,.08);
-  color:var(--text);cursor:pointer;font-size:.8rem;display:inline-flex;align-items:center;
-}
-.miss-go:active{border-color:var(--gold);}
-
-/* ── THEORY ──────────────────────────────────────────── */
-/* font-size:1rem = 16px prevents iOS zoom */
-textarea{
-  width:100%;min-height:100px;padding:12px;resize:vertical;
-  border:1px solid var(--line);background:rgba(255,255,255,.05);
-  color:var(--text);font-size:1rem;line-height:1.5;border-radius:2px;
-}
-textarea::placeholder{color:rgba(192,168,128,.38);}
-
-/* ── LOG ─────────────────────────────────────────────── */
-.log-list{list-style:none;display:grid;gap:5px;}
-.log-list li{
-  padding:8px 11px;border-left:3px solid var(--gold);
-  background:rgba(255,255,255,.04);font-size:.81rem;color:var(--muted);line-height:1.5;
-}
-
-/* ── TOAST ───────────────────────────────────────────── */
-.toast{
-  position:fixed;left:50%;bottom:16px;z-index:99;
-  width:min(340px,calc(100vw - 24px));
-  padding:10px 13px;border-radius:3px;
-  border:1px solid rgba(241,189,113,.45);background:rgba(4,9,12,.97);
-  font-size:.85rem;line-height:1.4;
-  transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.18s;
-}
-.toast.show{opacity:1;transform:translate(-50%,0);}
-
-/* ── RESPONSIVE ──────────────────────────────────────── */
-@media(min-width:560px){
-  .loc-grid{grid-template-columns:repeat(3,1fr);}
-  .quiz-grid{grid-template-columns:repeat(2,1fr);}
-  .miss-grid{grid-template-columns:repeat(2,1fr);}
-  .char-card{display:grid;grid-template-columns:190px 1fr;}
-  .char-img{max-height:none;height:100%;object-fit:cover;}
-}
-/* Very small screens: stack stats 3+2 */
-@media(max-width:400px){
-  .stats{grid-template-columns:repeat(3,1fr);}
-  .loc-grid{grid-template-columns:repeat(2,1fr);}
-}
+/* ── TOAST ─────────────────────────── */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:var(--gold);color:#1a1206;font-family:"Trebuchet MS",sans-serif;font-weight:bold;
+  padding:11px 20px;border-radius:24px;font-size:.88rem;z-index:110;opacity:0;
+  transition:.3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.5);white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
 
-<!-- ══ HEADER ═══════════════════════════════════════════ -->
-<header class="hdr">
-  <button class="icon-btn" id="resetBtn" title="Start på nytt" aria-label="Start på nytt">↺</button>
+<header class="hdr" id="hdr">
+  <button class="back" id="backBtn" aria-label="Tilbake">‹</button>
   <div class="hdr-mid">
-    <div class="kap-pill" id="kapPill">Kapittel 1 av 5</div>
-    <div class="site-ttl">Øya</div>
+    <div class="hdr-kicker">Vemunds verden</div>
+    <div class="hdr-ttl" id="hdrTtl">ØYA</div>
   </div>
-  <button class="icon-btn" id="saveBtn" title="Lagre fremdrift" aria-label="Lagre">✓</button>
+  <div class="spacer"></div>
 </header>
 
-<div class="app">
+<!-- ══ HOME ══ -->
+<section class="view active" id="v-home">
+  <div class="wrap">
+    <div class="hero">
+      <img src="" id="heroImg" alt="Kart over Øya">
+      <div class="hero-veil">
+        <div class="hero-kicker">En fortelling fra havet</div>
+        <h1>ØYA</h1>
+        <p>Fyret, skogen og de 147 innbyggerne. Her begynner historien om Vemund.</p>
+      </div>
+    </div>
 
-  <!-- ══ STATS ════════════════════════════════════════════ -->
-  <div class="stats">
-    <div class="st">
-      <span class="st-lbl">Storm</span>
-      <span class="st-desc">Fare</span>
-      <span class="st-val" id="vStorm">55</span>
-      <div class="sbar"><div class="sfill s-storm" id="bStorm" style="width:55%"></div></div>
+    <div class="progress-strip">
+      <div class="pbadge">📖</div>
+      <div class="pt">
+        <b id="progTxt">0 av 2 kapitler lest</b>
+        <span id="progSub">Bla ned og begynn å lese</span>
+      </div>
+      <button class="cont" id="contBtn" style="display:none">Fortsett ›</button>
     </div>
-    <div class="st">
-      <span class="st-lbl">Ro</span>
-      <span class="st-desc">Kontroll</span>
-      <span class="st-val" id="vRo">58</span>
-      <div class="sbar"><div class="sfill s-ro" id="bRo" style="width:58%"></div></div>
-    </div>
-    <div class="st">
-      <span class="st-lbl">Oliver</span>
-      <span class="st-desc">Tillit</span>
-      <span class="st-val" id="vOliver">35</span>
-      <div class="sbar"><div class="sfill s-oliv" id="bOliver" style="width:35%"></div></div>
-    </div>
-    <div class="st">
-      <span class="st-lbl">Hans</span>
-      <span class="st-desc">Mistanke</span>
-      <span class="st-val" id="vHans">25</span>
-      <div class="sbar"><div class="sfill s-hans" id="bHans" style="width:25%"></div></div>
-    </div>
-    <div class="st">
-      <span class="st-lbl">Nøkler</span>
-      <span class="st-desc">Funnet</span>
-      <span class="st-val" id="vKeys">0</span>
-      <div class="sbar"><div class="sfill s-keys" id="bKeys" style="width:0%"></div></div>
+
+    <div class="tiles">
+      <button class="tile big" data-go="story">
+        <span class="ico">📖</span>
+        <span class="txt">
+          <span class="tt">Les historien</span>
+          <span class="ts">Kapittel 1 og 2 – hele fortellingen</span>
+        </span>
+        <span class="arrow">›</span>
+      </button>
+      <button class="tile" data-go="chars">
+        <span class="ico">🧭</span>
+        <span class="tt">Karakterer</span>
+        <span class="ts">Møt figurene</span>
+      </button>
+      <button class="tile" data-go="map">
+        <span class="ico">🗺️</span>
+        <span class="tt">Kartet</span>
+        <span class="ts">Utforsk Øya</span>
+      </button>
+      <button class="tile big" data-lb="comic">
+        <span class="ico">💬</span>
+        <span class="txt">
+          <span class="tt">Tegneserie: Kraften</span>
+          <span class="ts">Vemund viser Oliver hemmeligheten</span>
+        </span>
+        <span class="arrow">›</span>
+      </button>
     </div>
   </div>
+</section>
 
-  <!-- ══ KAPITTELKORT ══════════════════════════════════════ -->
-  <section>
-    <div class="kap-card">
-      <div class="kap-n" id="kapN">Kapittel 1</div>
-      <h2 class="kap-ttl" id="kapTtl">Stormen starter</h2>
-      <p class="kap-txt" id="kapTxt">Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene.</p>
+<!-- ══ STORY LIST ══ -->
+<section class="view" id="v-story">
+  <div class="wrap">
+    <div class="sect-h">Historien</div>
+    <div class="sect-sub">Trykk på et kapittel for å lese.</div>
+    <div id="chapList"></div>
+  </div>
+</section>
+
+<!-- ══ READER ══ -->
+<section class="view" id="v-reader">
+  <div class="wrap">
+    <div class="reader-head" id="readerHead"></div>
+    <div class="rule"></div>
+    <div class="prose" id="proseEl"></div>
+    <div class="chap-end">✦ ✦ ✦</div>
+    <button class="read-btn" id="readBtn"></button>
+    <div class="reader-nav">
+      <button id="prevChap">‹ Forrige</button>
+      <button id="nextChap">Neste ›</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ══ STEDER ════════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Utforsk øya</span>
-    <h2>Steder å besøke</h2>
-    <div class="loc-grid" id="locGrid"></div>
-  </section>
+<!-- ══ CHARACTERS ══ -->
+<section class="view" id="v-chars">
+  <div class="wrap">
+    <div class="sect-h">Karakterer</div>
+    <div class="sect-sub">Trykk for å se hele karakterplakaten.</div>
+    <div class="char-grid" id="charGrid"></div>
+    <div class="mini-row" id="animalRow"></div>
+  </div>
+</section>
 
-  <!-- ══ AKTIV SCENE — vises etter at man velger sted ══════ -->
-  <section id="sceneSection">
-    <span class="sec-lbl">Aktiv hendelse</span>
-    <h2 id="sceneH2">Hva skjer nå?</h2>
-    <div class="scene-wrap" id="sceneWrap">
-      <span class="scene-tag" id="sceneTag"></span>
-      <h3 class="scene-h" id="sceneH3"></h3>
-      <p class="scene-bod" id="sceneBod"></p>
-      <div class="choices" id="choicesEl"></div>
-      <div class="scene-res" id="sceneRes" style="display:none"></div>
-      <button class="next-btn" id="nextBtn">Neste hendelse →</button>
+<!-- ══ MAP ══ -->
+<section class="view" id="v-map">
+  <div class="wrap">
+    <div class="sect-h">Øya</div>
+    <div class="sect-sub">Trykk på kartet for å forstørre.</div>
+    <div class="map-frame" data-lb="map"><img src="" id="mapImg" alt="Kart over Øya"></div>
+    <div class="stat-row">
+      <div class="stat-box"><div class="v">147</div><div class="l">Innbyggere</div></div>
+      <div class="stat-box"><div class="v">90</div><div class="l">Barn</div></div>
+      <div class="stat-box"><div class="v">57</div><div class="l">Voksne</div></div>
     </div>
-  </section>
-
-  <!-- ══ KARAKTERER ════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Personer</span>
-    <h2>Hvem holder øya sammen?</h2>
-    <div class="char-tabs" id="charTabs"></div>
-    <div class="char-card">
-      <img class="char-img" id="charImg" alt="">
-      <div class="char-body">
-        <div class="char-role" id="charRole"></div>
-        <div class="char-name" id="charName"></div>
-        <p id="charTxt"></p>
-        <div class="char-facts" id="charFacts"></div>
-        <button class="use-btn" id="useBtn"></button>
-      </div>
+    <div class="map-note">
+      <b>Én vei.</b> Den begynner ved båthavnen, går gjennom nabolaget forbi skolen og
+      ungdomsskolen, videre opp mot skogen – og ender ute ved fyret, der Vemund bor.
+      Gården til Bodar ligger i skogkanten. Rundt det hele: havet.
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ══ DYR ══════════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Dyr på øya</span>
-    <h2>Gårdens beboere</h2>
-    <p>Bodar lever tett på dyrene. De kjenner øyas rytme bedre enn de fleste mennesker gjør.</p>
-    <div class="animal-row">
-      <span class="a-tag">🐄 Storfe</span>
-      <span class="a-tag">🐑 Sauer</span>
-      <span class="a-tag">🐓 Høner</span>
-      <span class="a-tag">🐈 Gårdskatt</span>
-      <span class="a-tag">🦅 Havørn</span>
-      <span class="a-tag">🦊 Rev i skogen</span>
-      <span class="a-tag">🐟 Torsk ved brygga</span>
-      <span class="a-tag">🐦 Måker ved fyret</span>
-    </div>
-  </section>
-
-  <!-- ══ GÅTEKAMMER ════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Gåtekammer</span>
-    <h2>Smarte oppgaver</h2>
-    <div class="quiz-grid" id="quizGrid"></div>
-  </section>
-
-  <!-- ══ OPPDRAG ══════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Oppdrag</span>
-    <h2>Det som driver historien</h2>
-    <div class="miss-grid" id="missGrid"></div>
-  </section>
-
-  <!-- ══ MIN TEORI ════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Min teori</span>
-    <h2>Hva skjer videre?</h2>
-    <textarea id="theory" placeholder="Skriv teorier, spor eller hva du tror Vemund bør gjøre..."></textarea>
-  </section>
-
-  <!-- ══ DAGBOK ════════════════════════════════════════════ -->
-  <section>
-    <span class="sec-lbl">Fyrdagbok</span>
-    <h2>Det som har skjedd</h2>
-    <ol class="log-list" id="logEl"></ol>
-  </section>
-
-</div><!-- .app -->
+<!-- ══ LIGHTBOX ══ -->
+<div class="lb" id="lb">
+  <div class="lb-bar">
+    <div class="t" id="lbTtl"></div>
+    <button id="lbZoom" title="Zoom">⤢</button>
+    <button id="lbClose" title="Lukk">✕</button>
+  </div>
+  <div class="lb-scroll" id="lbScroll">
+    <img id="lbImg" class="fit" src="" alt="">
+  </div>
+  <div class="lb-hint" id="lbHint">Trykk ⤢ for å forstørre og bla i detaljene</div>
+</div>
 
 <script>
-/* ════════════════════════════════════════════════════
-   DATA
-════════════════════════════════════════════════════ */
+/* ════════ BILDER ════════ */
 const BASE='assets/ChatGPT Image Jun 4, 2026, ';
-const IMGS={
+const IMG={
   oya:      BASE+'12_18_46 PM.png',
-  scene:    BASE+'12_18_59 PM.png',
-  sceneWide:BASE+'12_19_07 PM.png',
   vemund:   BASE+'12_19_16 PM.png',
   oliver:   BASE+'12_19_44 PM.png',
+  morfaren: BASE+'12_20_14 PM.png',
   bodar:    BASE+'12_19_55 PM.png',
   hans:     BASE+'12_20_02 PM.png',
-  morfaren: BASE+'12_20_14 PM.png',
+  comic:    BASE+'12_19_07 PM.png',
 };
 
-const KAPS=[
-  {n:1,ttl:'Stormen starter',   txt:'Lyset blinker på fyret. Morfaren later som ingenting, men Vemund kjenner strømmen i hendene. Noe er i ferd med å begynne.',                                                              ok:s=>true},
-  {n:2,ttl:'Sporene samles',    txt:'Oliver har tegnet et kart over blinkemønstrene. Fyret ser plutselig ikke tilfeldig ut. Vemund og Oliver begynner å forstå at øya snakker.',                                              ok:s=>s.vis.length>=2},
-  {n:3,ttl:'Hans sin skygge',   txt:'Hans har lagt merke til noe han ikke burde sett. Vemund må velge hva han avslører. Tilliten til Oliver avgjør neste trekk.',                                                            ok:s=>s.vis.includes('skole')||s.vis.includes('nabolag')},
-  {n:4,ttl:'Bodars hemmelighet',txt:'I skogen og på gården finnes regler eldre enn øya. Bodar vet hvilke. Vemund må lære dem før havet krever svar.',                                                                        ok:s=>s.vis.includes('skog')&&s.vis.includes('gard')},
-  {n:5,ttl:'Havet svarer',      txt:'Vemund lager ikke strømmen. Han styrer den. Vennskapet med Oliver blir en del av kraften – hemmeligheten kan endelig bæres av to.',                                                     ok:s=>s.vis.includes('havn')&&s.path>=5},
+/* ════════ KAPITLER (ekte tekst) ════════ */
+const CHAPTERS=[
+{
+  n:1, ttl:'Stormen over fyret', mins:6,
+  body:[
+    {img:'oya', cap:'Øya – 147 innbyggere og bare én vei.'},
+    `Det fantes bare én ordentlig vei på øya.`,
+    `Den begynte nede ved båthavnen, der båtene lå og slo mot bryggene selv på rolige dager. Den fortsatte gjennom nabolaget med de små husene som sto tett i tett, før den bøyde seg forbi skolen og ungdomsskolen, og forsvant deretter videre opp mot skogen og endte ute ved fyret.`,
+    `Det var der Vemund bodde.`,
+    `Han bodde sammen med morfaren sin, Crooki og en kongeørn.`,
+    `Øya hadde 147 innbyggere. Nitti barn. Femtisju voksne. Og én vei.`,
+    `Hvis noe skjedde på øya, visste alle det.`,
+    `– Du kommer til å miste ham! ropte Oliver.`,
+    `Vemund snudde seg ikke. Han løp nedover grusveien med den svarte hettegenseren flagrende rundt kroppen og sekken dunkende mot ryggen. Foran ham raste Crooki av sted som om han hadde sett verdens deiligste matrett foran seg.`,
+    `– Crooki! ropte Vemund. – Stopp!`,
+    `Crooki stoppet ikke.`,
+    `Det hadde han aldri gjort i hele sitt liv. Hvis Crooki hadde bestemt seg for å få tak i noe, hvert fall mat, stoppet han ikke før han var fornøyd. Uansett hvor mye Vemund ropte.`,
+    `Oliver kom pesende bak ham med den grønne hetta halvveis over ansiktet.`,
+    `– Jeg sa at du ikke skulle slippe båndet.`,
+    `– Han dro!`,
+    `– Han veier sikkert tolv kilo!`,
+    `– Han dro så hardt!`,
+    `– Det er ikke en unnskyldning!`,
+    `De løp forbi skolen akkurat idet døra til klasserommet ble åpnet. Noen av de yngre barna stakk hodene ut og begynte å rope etter dem, og innen Vemund hadde rukket å krysse skolegården, løp tre førsteklassinger langs gjerdet og heiet på Crooki.`,
+    `– Kom igjen, Crooki!`,
+    `– Ta ham!`,
+    `– Hvem skal han ta?`,
+    `– Aner ikke!`,
+    `Vemund kunne ikke la være å le, selv om lungene brant og beina begynte å protestere. Over dem gled en skygge over skolegården. Han løftet blikket akkurat idet Khan senket vingene og seilte lavt over hustakene.`,
+    `Oliver så også opp.`,
+    `– Ørnen din jukser.`,
+    `– Han er ikke med i løpet!`,
+    `Det var sant. Khan hadde dukket opp for tre år siden, en vintermorgen da havet lå grått og blankt rundt øya og Vemund hadde funnet ham skadet mellom steinene nedenfor fyret. Morfaren hadde sagt at kongeørner ikke lot seg temme, og Bodar hadde sagt at ville dyr skulle være ville, men Khan hadde tydeligvis bestemt seg for noe annet. Siden den dagen hadde han kommet og gått som han ville.`,
+    `Crooki bråstoppet ved veikanten.`,
+    `Vemund klarte ikke å bremse raskt nok. Han skled i grusen, veivet med armene og klarte akkurat å holde balansen før han dundret inn i en einerbusk.`,
+    `Oliver stoppet ved siden av ham og bøyde seg fram med hendene på knærne.`,
+    `– Jeg hater hunden din litt.`,
+    `Crooki sto helt stille med snuten vendt mot skogen. Halen var stiv. Ørene pekte framover. Hele kroppen så ut som en spent fjær.`,
+    `– Hva er det? spurte Vemund.`,
+    `Crooki bevegde seg ikke på lenge. Etter en stund tok han et forsiktig skritt frem. Så ett til. Og ett til. Han senket halen ned før han plutselig skjøt fart og løp inn mellom trærne.`,
+    `– Ikke igjen, sukket Oliver.`,
+    `– Kom!`,
+    `Vemund og Oliver la på sprang igjen og ropte etter Crooki mens de skjøv grener til siden for å komme seg fram i den tette skogen.`,
+    `Skogen luktet fuktig jord, granbar og sjø. Selv her inne kunne de kjenne den salte lukta fra havet. Det lå rundt hele øya. Noen ganger, når stormene kom, kunne man høre bølgene slå mot klippene selv fra den andre siden av skogen.`,
+    `Crooki beveget seg lenger framme mellom trærne.`,
+    `– Der! sa Vemund.`,
+    `De fulgte etter så godt de bare kunne. Mellom stammene begynte skogen å åpne seg. Sollyset nådde bakken igjen, og plutselig sto de ved et gammelt gjerde.`,
+    `– Bodars gård, sa Oliver.`,
+    `– Jepp.`,
+    `Den gamle røde låven lente seg litt mot venstre, og den var i ganske dårlig stand. Rundt beitene gikk krokete gjerder. Noen sauer løftet hodene da guttene kom, vurderte situasjonen og bestemte seg for at den sannsynligvis ikke var interessant og fortsatte å spise gress.`,
+    `– Jeg misunner sauer litt, sa Oliver.`,
+    `– Hvorfor det?`,
+    `– Ingen lekser.`,
+    `– Godt poeng.`,
+    `– Ingen prøver.`,
+    `– Enda bedre poeng.`,
+    `– Ingen Hans.`,
+    `Et vindu i hovedhuset åpnet seg.`,
+    `– Hvis dere har tenkt å stå der hele dagen, får dere i det minste gjøre dere nyttige!`,
+    `Begge guttene så opp. Bodar sto i vinduet. Han hadde den merkelige leirehatten sin på hodet, den som pekte oppover og endte i en liten oransje tupp. Kappen hang over skuldrene hans selv om det ikke var kaldt.`,
+    `Oliver lente seg mot Vemund.`,
+    `– Tror du han sover med den hatten?`,
+    `– Haha, jeg lurer egentlig veldig på hvordan han ser ut uten.`,
+    `Noen minutter senere satt de ved siden av hverandre og stablet vedkubber bak låven. Crooki hadde for lengst glemt mysteriet sitt og løp rundt etter sauene.`,
+    `– Ikke jag dem! ropte Bodar.`,
+    `Crooki bjeffet lykkelig.`,
+    `– Han tror det betyr ja, sa Oliver.`,
+    `– Det gjør han alltid.`,
+    `Bodar kom bort med armene fulle av ved. Ansiktet hans var fullt av rynker, men øynene var lyseblå og fulle av liv.`,
+    `– Storm på vei, sa han.`,
+    `– Det er alltid storm på vei, svarte Oliver.`,
+    `– Ikke som denne.`,
+    `Bodar stoppet opp og så mot havet.`,
+    `– Ser dere hvor lavt måsene flyr nå? Og hvordan de flyr rundt i sirkler? Det betyr at det er et kraftigere uvær enn det vi pleier.`,
+    `Begge guttene fulgte pekefingeren hans og så utover mot havet. Skyene hadde vokst over måsene og dekket nå nesten hele horisonten.`,
+    `– Ser dere fuglene?`,
+    `Khan sirklet langt oppe, han hadde ikke kommet så lavt som de andre. Flere måker kom flygende innover mot land.`,
+    `– Hva med dem? spurte Vemund.`,
+    `– De flyr feil vei.`,
+    `Oliver himlet med øynene.`,
+    `– Fugler vet ikke hvilken vei som er riktig.`,
+    `– Jo.`,
+    `– Hvordan vet du det?`,
+    `– Fordi jeg er eldre enn deg.`,
+    `– Det er et elendig argument.`,
+    `– Likevel er det sant.`,
+    `Oliver skulle til å svare, men et nytt vindkast feide over gårdsplassen før han rakk det. Det tok tak i den merkelige hatten til Bodar slik at den oransje tuppen bøyde seg.`,
+    `– Nå må du snart spikre fast den der, sa Oliver.`,
+    `Bodar løftet hånden og holdt hatten på plass.`,
+    `– Den har sittet på hodet mitt i over førti år, og den skal sitte der i minst førti år til!`,
+    `Ved siden av låven sto en gammel kjerre. Et av hjulene hang skjevt, og hele vogna hadde sunket litt ned i bakken. Små gresstrå vokste opp mellom plankene. Crooki hadde funnet den. Selvfølgelig. Han sto med frambeina oppe på kjerra og snuste ivrig mellom sprekkene.`,
+    `– Hva leter du etter nå? spurte Vemund.`,
+    `Crooki satte seg. Deretter nøs han så kraftig at han mistet balansen og falt bakover.`,
+    `Oliver lo.`,
+    `– Han hadde aldri overlevd som ulv.`,
+    `– Han er ikke ulv.`,
+    `– Det er poenget mitt.`,
+    `Vemund lo.`,
+    `Det var noe med ettermiddager som dette som alltid fikk ham til å føle at øya var hele verden. Skogen var både et eventyr og et mysterium. Og havet rundt lå der som en trygghet og noe velkjent, samtidig som havet alltid fikk frem noe melankolsk og tungt i blikkene til de gamle. Vemund hadde alltid lurt på hva det var som fikk de gamle til å sitte timesvis og stirre utover havet.`,
+    `En gang hadde han sett morfaren sin smile og le mens han så utover havet, og i det neste øyeblikket gråt han.`,
+    `Vemund prøvde å forestille seg hvordan det måtte være å bo et annet sted. Hvordan var det egentlig å bo i en by? Eller inne på fastlandet? Men hver gang endte han opp med å se for seg fyret igjen. Hjemme ville alltid være lyset som fór utover havet på kveldene. Bølgene mot bryggen og klippene. Morfarens lune humør og stemme. Khan som sirklet over klippene, Crooki og Oliver.`,
+    `Og de 147 nøklene som lå gjemt i blikkboksen under senga hans.`,
+    `Han hadde aldri fortalt Oliver hvor mange det egentlig var. Ikke fordi det var en hemmelighet. Det hørtes bare litt rart ut når man sa det høyt.`,
+    `Plutselig kom det et skarpt skrik fra luften. Det var Khan. Han kom glidende ned fra himmelen i full fart, satte seg på en gjerdestolpe og så urolig utover mot havet, bort på Oliver og Vemund og ut igjen mot havet.`,
+    `Vemund ble sittende og se på ham.`,
+    `– Hva er det med ham?`,
+    `– Jeg vet ikke.`,
+    `Vinden blåste godt gjennom hele gårdsplassen. Mye sterkere nå enn tidligere.`,
+    `– Nå blåser det virkelig opp. Gutter, dere må komme dere hjemover før denne stormen gjør det umulig å komme seg gjennom skogen igjen.`,
+    `Et gammelt blikkskilt på låven begynte å klapre. Bodar sto med armene langs siden og så i samme retning som Khan. Et drønn begynte langt der ute og rullet inn mot øya. Vemund kjente det gjennom bakken.`,
+    `– Dere burde dra hjem nå, gjentok Bodar.`,
+    `Oliver reiste seg først.`,
+    `– Vi ses i morgen?`,
+    `– Selvfølgelig, sa Vemund.`,
+    `Khan skrek igjen. Denne gangen så høyt at flere av sauene skvatt til og løp avgårde. Khan slo med vingene og lettet. I stedet for å fly innover mot skogen eller utover mot havet, satte han kurs rett mot fyret. Den mørke silhuetten ble mindre og mindre mot den tunge himmelen.`,
+    `Vemund fulgte ham med blikket.`,
+    `– Kom igjen, Crooki. Vi må komme oss hjem.`,
+  ]
+},
+{
+  n:2, ttl:'Elektrisitet', mins:5,
+  body:[
+    `Skogen føltes helt annerledes nå enn den pleide. Vemund så rundt seg og hadde aldri tenkt over hvor mørk skogen egentlig kunne bli.`,
+    `Foran ham løp Crooki, i sikksakk mellom små hauger og maurtuer. I trekronene over dem suste vinden, og Vemund så opp flere ganger, for det hørtes ut som de store grantrærne var i ferd med å knekke.`,
+    `Plutselig hørte de et voldsomt brak, og en svær grein fra et grantre falt ned i bakken rett foran dem. Heldigvis klarte de akkurat å hoppe til siden før den traff dem.`,
+    `Vemund stoppet i noen sekunder for å få pusten tilbake. Han hadde sett mange stormer her ute på øya, og det hadde vært både vind, lyn og torden før. Men i kveld føltes alt annerledes. Crooki hadde ikke stoppet, og var kommet flere meter foran Vemund før han snudde seg.`,
+    `Aldri før hadde Vemund sett Crooki så nervøs og redd. Nå gjaldt det bare å komme seg hjem, for det hadde startet å regne, og dråpene traff Vemund så hardt i ansiktet at han måtte holde hendene foran for i det hele tatt å klare å se noe.`,
+    `– Crooki! Crooki!`,
+    `Det var umulig å se Crooki fremme i mørket. Vemund ble litt nervøs. Men han stolte på at denne hunden kjente Øya så godt at han ville klare å finne veien hjem.`,
+    `Vemund kjente en lettelse i hele kroppen i det han så fyrtårnet komme frem bak skogkanten. Nå var han endelig ute.`,
+    `Her ute med sjøen kunne han høre hvordan bølgene traff steinene, og spruten sto høyt oppover tårnet.`,
+    `Det er akkurat i slike stunder vi trenger et slikt fyrtårn, tenkte Vemund.`,
+    `Men hvor var Morfar? Vemund løp opp mot tårnet og rev opp døra.`,
+    `– Morfar! Jeg er hjemme! Er du her?`,
+    `Ingen svarte.`,
+    `Vemund tittet rundt seg i gangen og så at oljehyren ikke hang på den faste plassen. Han gikk ut døra og så mot stigen som gikk helt opp til tårnet. Crooki sto der, logrende, og bjeffet.`,
+    `– Morfar! Er du der oppe?`,
+    `Vinden suste så høyt at om han var på toppen, ville det vært umulig at han kunne høre ham.`,
+    `Vemund tenkte på det Morfaren hadde lært ham. Det er på sånne dager, når stormene herjer, når vinden suser så høyt og skyene er så mørke, at fyrtårnet blir det viktigste i verden for dem som seiler.`,
+    `Langt ute på sjøen kjempet nå flere båter og skip en brutal kamp mot bølgene. Selv om de både hadde maskiner og verktøy for å navigere, kunne en storm gjøre det vanskelig. Vemund ble litt stolt. Tenk at han og Morfar her ute på Øya kunne være de som sikret at alle disse på båtene faktisk kom seg trygt hjem.`,
+    `For lyset i fyrtårnet er kanskje det eneste de ser, som forteller dem at her er det en trygg havn.`,
+    `Plutselig smalt det oppe i fyrtårnet. Det sprutet av knust glass.`,
+    `Vemund klatret opp stigen så fort han bare kunne. Morfar må være her oppe.`,
+    `Han kom seg opp til toppen. Lyset sendte fortsatt ut det jevne signalet det skulle, men Morfar var ikke å se. Vemund fant et par planker og satte dem opp foran vinduet og skulle prøve å feste dem, men så kom det et voldsomt vindkast, og den ene planken traff Vemund rett i ansiktet slik at han falt rett i bakken. Hele verden snurret rundt ham, og han klarte ikke å se noe – før det plutselig kom en mørk skygge opp i tårnet og lente seg over ham.`,
+    `– Vemund, går det bra?`,
+    `Heldigvis var det bare Morfar.`,
+    `– Jeg hørte glasset knuse og kom opp hit for å sjekke. Jeg er så glad for å se deg!`,
+    `– Jeg prøvde bare å fikse vinduet, stønnet Vemund.`,
+    `– Det er godt tenkt. Bare ligg her du, så skal jeg fikse det. Jeg ble så redd for deg da jeg ikke kunne se deg ved skogen.`,
+    `– Vi ble litt lenger hos Bodar, og så kom stormen, og den kom så mye raskere enn jeg trodde …`,
+    `– Ja, dette er noe annet enn en vanlig storm. Her må vi bare sørge for at lyset hele tiden blinker og lyser ut til alle der ute på havet.`,
+    `Vemund ble liggende på gulvet mens Morfar fikset vinduet.`,
+    `Bølgene var blitt enda større siden sist. Og saltvannet sprutet høyt over fyrtårnet på flere av de største bølgene.`,
+    `– Jeg må ned og sjekke fortøyningen på båten igjen, Vemund. Men du må bare bli liggende her, så kommer jeg snart opp.`,
+    `Vemund lukket øynene.`,
+    `Han visste ikke helt hvor lenge han hadde sovet, men han våknet til et voldsomt brak. Det tordnet så mye at hele tårnet ristet.`,
+    `Sakte klarte han å reise seg igjen, men kjente fortsatt at det banket i hodet.`,
+    `Det var helt mørkt ute, men han kunne se et lite lys nede med båtene. Det var Morfar som fortsatt sjekket fortøyningene.`,
+    `Plutselig kom det et lyn som gikk gjennom hele himmelen og lyste opp alt. Det hørtes og føltes ut som om hele lynet revnet. Og aldri før hadde Vemund sett et lyn så nært.`,
+    `Det kom flere og flere lynnedslag. Ett holdt på å treffe huset.`,
+    `– Morfar! Kom deg inn! ropte Vemund, men det var umulig for Morfar å høre ham gjennom veggen og vinden.`,
+    `Så kom det et nytt lyn. Denne gangen var det ikke bare nærmere – det traff rett i det lille huset deres slik at hele strømmen forsvant.`,
+    `Alt lyset rundt stigen og inne i fyrtårnet forsvant, og det ble helt mørkt. Til og med fyrlykta døde ut.`,
+    `Men nå måtte han komme seg ned igjen og finne Morfar. I det Vemund skulle til å gå ned stigen, med begge hendene på kanten, kom det et lyn som var i en helt annen farge. Det var blåaktig, og det traff fyrtårnet og lyste opp hele rommet. Strømmen fór raskt avgårde, gjennom hele stigen og inn i hendene til Vemund.`,
+    `Kroppen hans ristet voldsomt. Han kjente hvordan hele han spente seg, og alt ristet. Det var umulig å slippe taket på stigen. Før han igjen falt til gulvet.`,
+    `Han våknet av at det var noe som dro i ermet hans.`,
+    `Han skulle vært død. Det var det første han tenkte, og det var en merkelig tanke. Han løftet hendene opp foran ansiktet og så på dem. De var hele. Ingen brannmerker, ingen svarte flekker der han hadde holdt i stigen.`,
+    `Så dro det i ermet igjen, og denne gangen kjente han klørne.`,
+    `Vemund kom seg opp på beina og gikk bort til lykta. Han visste ikke hva han skulle gjøre. Han var fjorten år, og han hadde aldri fått lov til å røre motoren. Han hadde slått av og på en bryter kanskje tre ganger i hele sitt liv, alltid med morfaren i rommet.`,
+    `Han la hånden på messingen.`,
+    `Metallet var kaldt.`,
+    `Khan skrek til. Det var noe han prøvde å si.`,
+    `Vemund la begge hendene på lykta for å flytte den rundt og se om det var noe han kunne gjøre.`,
+    `Og da skjedde det.`,
+    `Varmen kom nedenfra, fra et sted under ribbeina, og den gikk ut gjennom skuldrene og nedover armene. Vemund kjente den passere håndleddet. Han kjente den løpe ut i hver enkelt finger. Og han kjente, uten å kunne forklare hvordan, nøyaktig hvor den ville: gjennom messingen, inn i de tynne kobbertrådene, forbi noe som var brent i stykker, og videre til noe som ikke var det.`,
+    `Under håndflaten hans begynte lykta å summe.`,
+    `Vemund slapp taket og skvatt til. Han sto helt stille og hørte sitt eget hjerte dunke.`,
+    `Så gikk han fram og la hånden på messingen på nytt.`,
+    `Denne gangen holdt han den der.`,
+    `Motoren begynte på nytt. Lyset strålte inne i den store linsen. Linsen begynte å dreie. Strålen svingte langsomt ut over havet, over de hvite bølgetoppene, over skjærene, videre og videre til den forsvant i mørket der ute – et sted der noen forhåpentligvis så den.`,
+    `Vemund sto med hånden på lykta og et sjokk i ansiktet. Han visste ikke hvordan han gjorde det. Han visste bare at han gjorde det.`,
+    `Oppe på kuppelen løftet Khan hodet mot lyset, og Vemund kunne se det gule øyet hans i skinnet. Khan skrek til. Som om han skjønte hva som foregikk.`,
+    `Fra denne dagen skulle alt forandre seg for Vemund, og Øya skulle aldri bli det samme igjen.`,
+    {img:'comic', cap:'Senere forteller Vemund hemmeligheten til Oliver.'},
+  ]
+},
 ];
 
-const STEDER={
-  fyr:         {t:'Fyret',        ty:'Hjem',           d:'Vemund og morfaren bor ytterst mot havet. Lyset blinker selv når stormen tar strømmen.',              s:'Morfaren sier at havet gir deg alt du trenger, men krever at du gir noe tilbake.',     p:'Vemund kjenner strømmen i veggen. Tre blink: kort, kort, langt.',              c:'Fyret svarer alltid først når strømsporet begynner.',k:18},
-  nabolag:     {t:'Nabolaget',    ty:'Fellesskap',     d:'Alle kjenner alle. Rykter beveger seg raskere enn vinden.',                                           s:'Oliver bor på høyre side av veien. Hans bor mellom nabolaget og skolen.',            p:'En gatelykt slukker når Vemund puster for fort. Noen bak gardinen ser det.',   c:'Nabolaget skjuler rykter – og hvem som lyver.',      k:12},
-  skole:       {t:'Skolen',       ty:'Hverdag',        d:'En liten skole der pauserommet kan føles større enn hele øya.',                                       s:'Hans vil bestemme, men er redd for å virke svak.',                                  p:'Lysrørene dirrer. Vemund må velge mellom å skjule seg og hjelpe noen.',        c:'Hans er farligst når han føler seg liten.',          k:11},
-  ungdomsskole:{t:'Ungdomsskolen',ty:'Konflikt',       d:'Her presser Hans grensene. Oliver ser mer enn han sier.',                                             s:'Hvis følelsene tar over, går sikringene for Vemund.',                               p:'En gammel radio skurrer med Vemunds navn.',                                    c:'Kompasset peker mot den som bærer mest strøm.',      k:14},
-  skog:        {t:'Skogen',       ty:'Gamle historier',d:'Tett skog midt på øya. Stier forsvinner og gamle historier sitter fast mellom trærne.',              s:'Bodar kjenner gamle regler. Jorda lyver ikke, men folk gjør.',                      p:'Blå gnister løper langs våte røtter. En sti åpner og lukker seg.',             c:'Skogen kommer før gården når de gamle reglene våkner.',k:24},
-  gard:        {t:'Gården',       ty:'Bodar',          d:'Bodar holder gården i hevd og lever tett på dyr, jord og tradisjoner.',                              s:'Bodar sier lite, men ser potensialet i Vemund før Vemund ser det selv.',           p:'Lamper i fjøset slår seg på i feil rekkefølge. Bodar teller blinkene.',        c:'Bodar vet at jorda husker mer enn menneskene.',      k:20},
-  havn:        {t:'Båthavnen',    ty:'Grense',         d:'De har en båt, men forlater aldri øya. Ved brygga høres havet nesten ut som pust.',                  s:'Kompasset peker ikke alltid nord. Noen ganger peker det mot Vemund.',             p:'Lanternene langs brygga tenner én etter én, som om noen ute i mørket svarer.',c:'Havet gir svar først når båthavnen er besøkt.',      k:17},
-};
-
-const CHARS={
-  vemund:  {n:'Vemund',  r:'Gutten som styrer strømmen', i:'vemund',  d:'14 år. Han kan skape, lede og stoppe elektrisitet – jo sterkere følelsene, jo farligere evnen.',                            a:'Vemund samler strømmen i stedet for å slippe den løs. Stormen mister grep.',  e:{storm:-5,calm:3,power:5},  f:{Evne:'Styrer elektrisitet',Styrke:'Modig og beskyttende',Svakhet:'Redd for å skade andre'}},
-  oliver:  {n:'Oliver',  r:'Planleggeren',                i:'oliver',  d:'15 år. Vemunds bestevenn. Han ser sammenhenger andre overser og holder hodet kaldt.',                                        a:'Oliver tegner sporene på kartet. En låst oppgave blir lettere å løse.',       e:{trust:7,calm:4},           f:{Evne:'Strategi og mønstre',Styrke:'Lojal og observant',Svakhet:'Tar for mye ansvar'}},
-  morfaren:{n:'Morfaren',r:'Fyrets vokter',               i:'morfaren',d:'62 år. Har voktet fyret i over 40 år. Kjenner havet bedre enn noen, men bærer på skyld.',                                   a:'Morfaren lærer Vemund å lese været før han leser strømmen.',                  e:{sea:8,calm:5,storm:-3},    f:{Yrke:'Fyrvokter',Styrke:'Uredd i storm',Drøm:'At Vemund en dag tar over fyret'}},
-  bodar:   {n:'Bodar',   r:'Den gamle regelen',           i:'bodar',   d:'Ca. 65 år. Kjenner skogen, jorda og hemmelighetene bedre enn de fleste.',                                                   a:'Bodar ber Vemund stoppe og observere. Det åpner et gammelt spor.',            e:{calm:6,keys:5},            f:{Bor:'Gården ved skogen',Styrke:'Praktisk og rettferdig',Regel:'Jorda lyver ikke. Men folk gjør.'}},
-  hans:    {n:'Hans',    r:'Antagonist',                  i:'hans',    d:'15 år. Sterk og maktbevisst. Han mobber for å føle seg mektig og skjuler at han trenger beundring.',                        a:'Du studerer Hans uten å provosere. Han blir mindre uforutsigbar.',            e:{suspicion:-6,calm:2},      f:{Mål:'Være øverst',Styrke:'Tør å presse andre',Svakhet:'Redd for å virke svak'}},
-};
-
-const P2S={fyr:0,skole:1,skog:2,havn:3,gard:4};
-
-const SCENES=[
-  {sted:'Fyret',     sid:'fyr',  t:'Stormen banker på ruta',     x:'Lyset blinker feil. Morfaren later som han ikke er redd, men Vemund kjenner strømmen trekke i hendene.',c:[
-    {l:'Følge strømmen alene',         e:{power:12,calm:-9,suspicion:6},   r:'Vemund fant et nytt mønster, men pulsen gikk for fort.'},
-    {l:'Be Oliver tegne blinkene',     e:{trust:9,calm:4,power:4},         r:'Oliver tegnet blinkene som et kart. Plutselig så fyret mindre tilfeldig ut.'},
-    {l:'Spørre morfaren direkte',      e:{sea:8,calm:-2,suspicion:-3},     r:'Morfaren svarte kort. Havet hadde tatt mer enn han hadde fortalt.'},
-  ]},
-  {sted:'Skolen',    sid:'skole',t:'Hans presser fram et svar',   x:'Hans står for nær. Alle venter på at Vemund skal reagere. Strømmen hopper hvis han mister roen.',c:[
-    {l:'La Oliver snakke',             e:{trust:8,calm:7,suspicion:-4},    r:'Oliver tok ordet. Det kostet stolthet, men reddet hemmeligheten.'},
-    {l:'Skremme Hans med lyset',       e:{power:10,suspicion:14,calm:-12}, r:'Lyset knitret over taket. Hans rygget, men alle husket det.'},
-    {l:'Se hva Hans egentlig frykter', e:{calm:5,trust:3,suspicion:-2},    r:'Vemund så det lille rykket i blikket til Hans. Frykt, ikke bare sinne.'},
-  ]},
-  {sted:'Skogen',    sid:'skog', t:'Stien som flytter seg',       x:'Skogen er mørkere enn kartet sier. Noen stier åpner seg bare hvis man går inn med riktig grunn.',c:[
-    {l:'Følge kompasset mot Vemund',   e:{sea:7,power:4,calm:-3},          r:'Kompasset pekte mot Vemund, og likevel førte det dypere inn.'},
-    {l:'Lese spor i bakken',           e:{calm:8,sea:4},                   r:'Jorda var våt uten regn. Bodar hadde rett: bakken husker.'},
-    {l:'Lyse opp stien med strøm',     e:{power:9,calm:-6,suspicion:4},    r:'Trærne kastet blå skygger. Noe lenger inne svarte med samme lys.'},
-  ]},
-  {sted:'Båthavnen', sid:'havn', t:'Båten som ikke skal brukes',  x:'Tauverket knirker. Båten ligger klar, men morfaren har alltid sagt at de aldri forlater øya.',c:[
-    {l:'Teste motoren',                e:{sea:8,suspicion:5,calm:-4},      r:'Motoren hostet én gang. Ute i mørket blinket et lys tilbake.'},
-    {l:'Undersøke bunnen',             e:{keys:6,calm:4},                  r:'Under en løs planke lå tre gamle nøkler og et kartmerke.'},
-    {l:'Høre på havet',                e:{sea:10,storm:-5,calm:3},         r:'Havet svarte ikke med ord. Det svarte med rytme.'},
-  ]},
-  {sted:'Gården',    sid:'gard', t:'Bodars prøve',                x:'Bodar legger tre gjenstander på bordet: nøkkel, stein og rusten sikring. Bare én forteller sannheten.',c:[
-    {l:'Velge nøkkelen',               e:{keys:8,calm:-1},                 r:'Nøkkelen var ekte, men ikke svaret. Bodar så likevel at du tenkte.'},
-    {l:'Velge steinen',                e:{calm:8,sea:3},                   r:'Steinen var våt på én side. Den hadde ligget ved havet, ikke gården.'},
-    {l:'Velge sikringen',              e:{power:7,suspicion:-3},           r:'Sikringen var brent innenfra. Vemund kjente mønsteret.'},
-  ]},
+/* ════════ KARAKTERER ════════ */
+const CHARS=[
+  {img:'vemund',  nm:'Vemund',  rl:'Gutten som styrer strømmen · 14 år'},
+  {img:'oliver',  nm:'Oliver',  rl:'Vemunds bestevenn · 15 år'},
+  {img:'morfaren',nm:'Morfaren',rl:'Fyrets vokter · 62 år'},
+  {img:'bodar',   nm:'Bodar',   rl:'Den gamle på gården · ~65 år'},
+  {img:'hans',    nm:'Hans',    rl:'Antagonisten · 15 år'},
+];
+const ANIMALS=[
+  {ico:'🐕',nm:'Crooki',md:'Vemunds hund. Følger nesa og stopper aldri.'},
+  {ico:'🦅',nm:'Khan',md:'Kongeørnen Vemund reddet. Kommer og går som han vil.'},
 ];
 
-const QUIZ=[
-  {id:'stromkode', t:'Strømkoden',       q:'Skriv første bokstav i hvert sted i strømsporet.',                     h:'Fyret, skogen, gården, båthavnen, nabolaget, skolen.',    ok:s=>s.path>=3,    a:v=>c(v)==='fsgbns',  r:'Du låste opp Strømmerker. Vemund kan følge en usynlig vei gjennom øya.'},
-  {id:'nokkelboks',t:'Nøkkelboksen',     q:'Hvor mange nøkler finnes i Vemunds gamle blikkboks?',                  h:'Svaret er et tall mellom 100 og 200.',                     ok:s=>s.keys>=30,   a:v=>c(v)==='147',     r:'Nøkkelboksen åpnet seg. Inni den høres havet.'},
-  {id:'hans',      t:'Hans sin svakhet', q:'Hva trenger Hans mest, selv om han later som han bare vil bestemme?',  h:'Svakheten handler ikke om muskler eller penger.',          ok:s=>s.vis.includes('skole')||s.char==='hans', a:v=>['beundring','å bli beundret','bli beundret','respekt'].includes(w(v)), r:'Du forstår Hans bedre. Han er fortsatt farlig, men lettere å lese.'},
-  {id:'bodarregel',t:'Bodars regel',     q:'Bodar sier: «Jorda lyver ikke. Men folk ...»',                        h:'Lytt på gården eller åpne Bodar-kortet.',                 ok:s=>s.vis.includes('skog')&&s.vis.includes('gard'), a:v=>['gjør','gjor'].includes(w(v)), r:'Bodar nikker. Det er nesten mer ros enn en lang tale.'},
-  {id:'kompass',   t:'Kompasset',        q:'Hva peker kompasset mot når det ikke peker nord?',                    h:'Båthavnen og ungdomsskolen gir samme svar.',               ok:s=>s.vis.includes('havn')&&s.vis.includes('ungdomsskole'), a:v=>w(v)==='vemund', r:'Kompassnålen stopper. Den peker på Vemund, ikke på verden.'},
-];
+/* ════════ STATE ════════ */
+const KEY='oya-v6';
+let st={read:[],last:null};
+try{const sv=JSON.parse(localStorage.getItem(KEY));if(sv){st={...st,...sv};st.read=sv.read||[];}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
 
-const MISS=[
-  {id:'oliver',t:'Fortell Oliver sannheten',  x:'Velg Oliver og besøk fyret.',                    ico:'🤝',ok:s=>s.char==='oliver'&&s.vis.includes('fyr'),               j:'fyr',  ch:'oliver'},
-  {id:'regel', t:'Finn den gamle regelen',    x:'Utforsk skogen og gården.',                      ico:'🌲',ok:s=>s.vis.includes('skog')&&s.vis.includes('gard'),         j:'skog', ch:'bodar'},
-  {id:'spor',  t:'Ro strømmen',               x:'Fullfør strømsporet i riktig rekkefølge.',       ico:'⚡',ok:s=>s.path>=[...Object.keys(STEDER)].length,               j:'fyr',  ch:'vemund'},
-  {id:'hans',  t:'Forstå Hans',               x:'Løs gåten om Hans sin svakhet.',                 ico:'👁',ok:s=>s.solved.includes('hans'),                              j:'skole',ch:'hans'},
-  {id:'havet', t:'Finn hva havet vil ha',     x:'Besøk båthavnen med Morfaren og lær av havet.', ico:'🌊',ok:s=>s.vis.includes('havn')&&s.char==='morfaren'&&s.sea>=50,j:'havn', ch:'morfaren'},
-];
-
-const PATH=['fyr','skog','gard','havn','nabolag','skole'];
-
-/* ════════════════════════════════════════════════════
-   STATE
-════════════════════════════════════════════════════ */
-const I0={
-  place:'fyr',char:'vemund',
-  vis:[],solved:[],log:['Stormen går utenfor. Fyret blinker likevel.'],
-  keys:0,storm:55,calm:58,trust:35,suspicion:25,sea:20,power:42,
-  path:0,scIdx:0,
-  sc:SCENES.map(()=>-1),
-  locR:{},theory:'',
-};
-let s={...I0};
-const sv=JSON.parse(localStorage.getItem('oya-v5')||'null');
-if(sv){
-  s={...I0,...sv};
-  s.vis||=[];s.solved||=[];s.log||=[];s.locR||={};
-  if(!Array.isArray(s.sc)||s.sc.length!==SCENES.length)s.sc=SCENES.map(()=>-1);
-}
-
-/* ════════════════════════════════════════════════════
-   HELPERS
-════════════════════════════════════════════════════ */
+/* ════════ HELPERS ════════ */
 const $=q=>document.querySelector(q);
-const c=v=>String(v).toLowerCase().replace(/[\s-]/g,'');
-const w=v=>String(v).toLowerCase().trim().replace(/\s+/g,' ');
-const cap=v=>Math.max(0,Math.min(100,v));
-function persist(){localStorage.setItem('oya-v5',JSON.stringify(s));}
-function toast(msg){
-  const el=$('#toast');el.textContent=msg;el.classList.add('show');
-  clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2600);
-}
-function note(x){if(!s.log.includes(x))s.log.unshift(x);s.log=s.log.slice(0,20);}
-function fx(e={}){
-  const d={storm:0,calm:0,trust:0,suspicion:0,sea:0,power:0,keys:0,...e};
-  s.storm=cap(s.storm+d.storm);s.calm=cap(s.calm+d.calm);
-  s.trust=cap(s.trust+d.trust);s.suspicion=cap(s.suspicion+d.suspicion);
-  s.sea=cap(s.sea+d.sea);s.power=cap(s.power+d.power);
-  s.keys=Math.min(147,s.keys+d.keys);
-}
-function loadImg(el,key){
-  const src=IMGS[key];if(!src){el.style.display='none';return;}
-  el.style.display='';el.src=encodeURI(src);
-  el.onerror=()=>{el.style.display='none';};
-}
-function scrollTo(id){
-  const el=document.getElementById(id);
-  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2400);}
 
-/* ════════════════════════════════════════════════════
-   ACTIONS
-════════════════════════════════════════════════════ */
-function goPlace(id,mode='visit'){
-  const p=STEDER[id];s.place=id;
-  const fresh=!s.vis.includes(id);
-  if(fresh){s.vis.push(id);s.keys=Math.min(147,s.keys+p.k);s.storm=cap(s.storm-4);}
-  let res='';
-  if(mode==='listen'){res=p.s;s.calm=cap(s.calm+2);note(p.s);toast('👂 Spor: '+p.t);}
-  else if(mode==='power'){
-    res=p.p;s.power=cap(s.power+6);s.storm=cap(s.storm+2);
-    if(['skole','ungdomsskole','nabolag'].includes(id))s.suspicion=cap(s.suspicion+4);
-    note(p.p);toast('⚡ Strømmen reagerte i '+p.t+'.');
-  }else{res=p.c;note(fresh?'Besøkt: '+p.t+'.':p.c);toast('🔍 '+p.t+' utforsket.');}
-  s.locR[id+mode]=res;
-  /* strømsporet */
-  if(PATH[s.path]===id){s.path++;s.calm=cap(s.calm+5);s.storm=cap(s.storm-6);note('Strømsporet: '+p.t+'.');}
-  else if(s.path>0&&s.path<PATH.length)s.storm=cap(s.storm+3);
-  /* bytt scene til stedet */
-  if(P2S[id]!==undefined)s.scIdx=P2S[id];
-  persist();render();
-  /* scroll ned til scene som ligger rett under stedene */
-  setTimeout(()=>scrollTo('sceneSection'),100);
+/* ════════ ROUTER ════════ */
+let curReader=0;
+const TITLES={home:'ØYA',story:'HISTORIEN',reader:'',chars:'KARAKTERER',map:'ØYA'};
+function go(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $('#v-'+view).classList.add('active');
+  const hdr=$('#hdr');
+  if(view==='home'){hdr.classList.remove('sub');}else{hdr.classList.add('sub');}
+  $('#hdrTtl').textContent=TITLES[view]||'ØYA';
+  st.lastView=view;save();
+  window.scrollTo({top:0,behavior:'auto'});
 }
-
-function choose(scIdx,chIdx){
-  if(s.sc[scIdx]!==-1)return;
-  s.sc[scIdx]=chIdx;
-  fx(SCENES[scIdx].c[chIdx].e);s.keys=Math.min(147,s.keys+3);
-  note(SCENES[scIdx].c[chIdx].r);
-  if(s.suspicion>=75)note('Hans følger ekstra nøye med nå.');
-  if(s.calm<=20)note('Vemund mister nesten kontrollen. Han trenger ro.');
-  toast('Valget endret historien.');
-  persist();render();
+function back(){
+  const cur=document.querySelector('.view.active').id;
+  if(cur==='v-reader')go('story');
+  else go('home');
 }
+$('#backBtn').onclick=back;
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+document.querySelectorAll('[data-lb]').forEach(b=>b.onclick=()=>openLB(b.dataset.lb));
 
-function nextScene(){
-  s.scIdx=(s.scIdx+1)%SCENES.length;
-  note('Ny hendelse: '+SCENES[s.scIdx].t+'.');
-  toast('Ny hendelse åpnet.');
-  persist();renderScene();renderStats();
-}
-
-function pickChar(id){s.char=id;note(CHARS[id].n+' valgt.');persist();renderChars();}
-
-function useChar(){
-  fx(CHARS[s.char].e);note(CHARS[s.char].a);
-  toast(CHARS[s.char].n+' påvirket historien.');persist();render();
-}
-
-function solveQ(id){
-  const q=QUIZ.find(x=>x.id===id);
-  const inp=$('[data-ans="'+id+'"]');
-  const fb=$('#fb'+id);
-  if(!q||!inp)return;
-  if(q.a(inp.value)){
-    if(!s.solved.includes(id))s.solved.push(id);
-    s.keys=Math.min(147,s.keys+10);s.calm=cap(s.calm+5);
-    note(q.r);toast('Gåte løst! ✓');persist();render();
-  }else{
-    if(fb)fb.textContent='Ikke riktig – sjekk hintet.';
-    s.storm=cap(s.storm+2);persist();renderStats();
-  }
-}
-
-/* ════════════════════════════════════════════════════
-   RENDER
-════════════════════════════════════════════════════ */
-function renderStats(){
-  $('#vStorm').textContent=s.storm;$('#vRo').textContent=s.calm;
-  $('#vOliver').textContent=s.trust;$('#vHans').textContent=s.suspicion;
-  $('#vKeys').textContent=s.keys;
-  $('#bStorm').style.width=s.storm+'%';$('#bRo').style.width=s.calm+'%';
-  $('#bOliver').style.width=s.trust+'%';$('#bHans').style.width=s.suspicion+'%';
-  $('#bKeys').style.width=(s.keys/147*100).toFixed(1)+'%';
-}
-
-function renderKap(){
-  const k=[...KAPS].reverse().find(k=>k.ok(s))||KAPS[0];
-  $('#kapPill').textContent='Kapittel '+k.n+' av 5';
-  $('#kapN').textContent='Kapittel '+k.n;
-  $('#kapTtl').textContent=k.ttl;
-  $('#kapTxt').textContent=k.txt;
-}
-
-function renderLoc(){
-  const g=$('#locGrid');g.innerHTML='';
-  Object.entries(STEDER).forEach(([id,p])=>{
-    const vis=s.vis.includes(id),act=s.place===id;
-    const lastRes=s.locR[id+'visit']||s.locR[id+'listen']||s.locR[id+'power']||'';
+/* ════════ STORY LIST ════════ */
+function renderStory(){
+  const el=$('#chapList');el.innerHTML='';
+  CHAPTERS.forEach((c,i)=>{
+    const done=st.read.includes(c.n);
     const card=document.createElement('div');
-    card.className='loc-card'+(act?' active':'')+(vis?' visited':'');
+    card.className='chap-card';
     card.innerHTML=`
-      <span class="loc-type">${p.ty}</span>
-      <span class="loc-name">${p.t}</span>
-      <span class="loc-prev">${p.d}</span>
-      <div class="loc-btns">
-        <button class="loc-btn primary" data-go="${id}" data-mode="visit">
-          <span class="loc-btn-ico">🔍</span>Utforsk
-        </button>
-        <button class="loc-btn" data-go="${id}" data-mode="listen">
-          <span class="loc-btn-ico">👂</span>Lytt
-        </button>
-        <button class="loc-btn" data-go="${id}" data-mode="power">
-          <span class="loc-btn-ico">⚡</span>Strøm
-        </button>
-      </div>
-      ${lastRes?`<div class="loc-res">${lastRes}</div>`:''}
-    `;
-    g.appendChild(card);
-  });
-}
-
-function renderScene(){
-  const sc=SCENES[s.scIdx],chosen=s.sc[s.scIdx];
-  $('#sceneTag').textContent=sc.sted;
-  $('#sceneH3').textContent=sc.t;
-  $('#sceneBod').textContent=sc.x;
-  const ch=$('#choicesEl');ch.innerHTML='';
-  sc.c.forEach((c,i)=>{
-    const b=document.createElement('button');
-    b.className='ch-btn'+(chosen===i?' picked':'');
-    b.textContent=c.l;
-    if(chosen===-1)b.onclick=()=>choose(s.scIdx,i);
-    else b.disabled=(chosen!==i);
-    ch.appendChild(b);
-  });
-  const res=$('#sceneRes');
-  if(chosen!==-1){res.textContent=sc.c[chosen].r;res.style.display='block';}
-  else res.style.display='none';
-}
-
-function renderChars(){
-  const tabs=$('#charTabs');tabs.innerHTML='';
-  Object.entries(CHARS).forEach(([id,ch])=>{
-    const b=document.createElement('button');
-    b.className='char-tab'+(s.char===id?' active':'');
-    b.textContent=ch.n;b.onclick=()=>pickChar(id);
-    tabs.appendChild(b);
-  });
-  const ch=CHARS[s.char];
-  loadImg($('#charImg'),ch.i);$('#charImg').alt=ch.n;
-  $('#charRole').textContent=ch.r;$('#charName').textContent=ch.n;
-  $('#charTxt').textContent=ch.d;
-  const facts=$('#charFacts');facts.innerHTML='';
-  Object.entries(ch.f).forEach(([k,v])=>{
-    facts.insertAdjacentHTML('beforeend',`<span class="fk">${k}</span><span class="fv">${v}</span>`);
-  });
-  $('#useBtn').textContent='Bruk '+ch.n;
-}
-
-function renderQuiz(){
-  const g=$('#quizGrid');g.innerHTML='';
-  QUIZ.forEach(q=>{
-    const unl=q.ok(s),sol=s.solved.includes(q.id);
-    const div=document.createElement('div');
-    div.className='quiz-card'+(sol?' solved':'')+(unl?'':' locked');
-    if(!unl){
-      div.innerHTML=`<span class="q-tag">Låst</span><h3>${q.t}</h3><p>Besøk flere steder for å låse opp.</p>`;
-    }else if(sol){
-      div.innerHTML=`<span class="q-tag">Løst ✓</span><h3>${q.t}</h3><p>${q.r}</p>`;
-    }else{
-      div.innerHTML=`
-        <span class="q-tag">Uløst</span><h3>${q.t}</h3>
-        <p class="q-txt">${q.q}</p>
-        <details><summary>Hint</summary><p>${q.h}</p></details>
-        <div class="ans-row">
-          <input data-ans="${q.id}" placeholder="Skriv svar her" autocomplete="off">
-          <button class="solve-btn" data-sol="${q.id}">Sjekk</button>
+      <div class="chap-num"><span class="k">Kapittel</span><span class="n">${c.n}</span></div>
+      <div class="chap-body">
+        <h3>${c.ttl}</h3>
+        <p>${c.n===1?'Vemund og Oliver jager Crooki gjennom øya mens en storm ulik alle andre bygger seg opp.':'Stormen treffer fyret. Et blått lyn forandrer alt Vemund trodde han visste om seg selv.'}</p>
+        <div class="chap-meta">
+          <span>⏱ ${c.mins} min</span><span class="dot"></span>
+          <span class="${done?'read':'unread'}">${done?'✓ Lest':'Ikke lest ennå'}</span>
         </div>
-        <div class="q-fb" id="fb${q.id}"></div>
-      `;
+      </div>`;
+    card.onclick=()=>openChapter(i);
+    el.appendChild(card);
+  });
+}
+
+/* ════════ READER ════════ */
+function openChapter(i){
+  curReader=i;
+  const c=CHAPTERS[i];
+  $('#readerHead').innerHTML=`<div class="k">Kapittel ${c.n}</div><h2>${c.ttl}</h2><div class="meta">⏱ ${c.mins} min · Vemunds verden</div>`;
+  const prose=$('#proseEl');prose.innerHTML='';
+  let firstPara=true;
+  c.body.forEach(item=>{
+    if(typeof item==='object'&&item.img){
+      const fig=document.createElement('figure');
+      fig.innerHTML=`<span class="zoomhint">⤢ trykk</span><img src="${IMG[item.img]}" alt=""><figcaption>${item.cap}</figcaption>`;
+      fig.onclick=()=>openLB(item.img,item.cap);
+      prose.appendChild(fig);
+    }else{
+      const p=document.createElement('p');
+      const isDlg=item.trim().startsWith('–');
+      p.className=(firstPara&&!isDlg?'first ':'')+(isDlg?'dlg':'');
+      if(firstPara&&!isDlg)firstPara=false;
+      p.textContent=item;
+      prose.appendChild(p);
     }
-    g.appendChild(div);
   });
+  updateReadBtn();
+  $('#prevChap').disabled=(i===0);
+  $('#nextChap').disabled=(i===CHAPTERS.length-1);
+  $('#nextChap').textContent=(i===CHAPTERS.length-1)?'Siste kapittel':'Neste ›';
+  st.last=c.n;save();
+  go('reader');
 }
-
-function renderMiss(){
-  const g=$('#missGrid');g.innerHTML='';
-  MISS.forEach(m=>{
-    const done=m.ok(s);
-    const div=document.createElement('div');
-    div.className='miss-card'+(done?' done':'');
-    div.innerHTML=`
-      <div class="miss-ico">${m.ico}</div>
-      <div>
-        <h3>${m.t}</h3><p>${m.x}</p>
-        <button class="miss-go" data-miss="${m.id}">${done?'Fullført ✓':'Gå til oppdrag'}</button>
-      </div>
-    `;
-    g.appendChild(div);
-  });
+function updateReadBtn(){
+  const c=CHAPTERS[curReader];const done=st.read.includes(c.n);
+  const b=$('#readBtn');
+  b.textContent=done?'✓ Markert som lest':'Marker som lest';
+  b.classList.toggle('done',done);
 }
-
-function renderLog(){
-  const el=$('#logEl');el.innerHTML='';
-  s.log.forEach(x=>{const li=document.createElement('li');li.textContent=x;el.appendChild(li);});
-}
-
-function renderTheory(){if(document.activeElement!==$('#theory'))$('#theory').value=s.theory||'';}
-
-function render(){
-  renderStats();renderKap();renderLoc();renderScene();
-  renderChars();renderQuiz();renderMiss();renderLog();renderTheory();
-}
-
-/* ════════════════════════════════════════════════════
-   EVENTS — event delegation for all dynamic buttons
-════════════════════════════════════════════════════ */
-document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-go],[data-sol],[data-miss]')||e.target;
-  if(t.dataset.go)   goPlace(t.dataset.go, t.dataset.mode||'visit');
-  if(t.dataset.sol)  solveQ(t.dataset.sol);
-  if(t.dataset.miss){
-    const m=MISS.find(x=>x.id===t.dataset.miss);
-    if(m){s.char=m.ch;goPlace(m.j);}
-  }
-});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&e.target.dataset.ans)solveQ(e.target.dataset.ans);
-});
-
-$('#nextBtn').onclick=nextScene;
-$('#useBtn').onclick=useChar;
-$('#theory').oninput=e=>{s.theory=e.target.value;persist();};
-$('#saveBtn').onclick=()=>{persist();note('Lagret.');renderLog();toast('Lagret ✓');};
-$('#resetBtn').onclick=()=>{
-  if(confirm('Start helt på nytt? All fremdrift slettes.')){
-    localStorage.removeItem('oya-v5');location.reload();
-  }
+$('#readBtn').onclick=()=>{
+  const c=CHAPTERS[curReader];
+  if(st.read.includes(c.n)){st.read=st.read.filter(n=>n!==c.n);toast('Fjernet «lest»-merket');}
+  else{st.read.push(c.n);toast('Kapittel '+c.n+' markert som lest ✓');}
+  save();updateReadBtn();renderStory();renderProgress();
 };
+$('#prevChap').onclick=()=>{if(curReader>0)openChapter(curReader-1);};
+$('#nextChap').onclick=()=>{if(curReader<CHAPTERS.length-1)openChapter(curReader+1);};
 
-/* ════════════════════════════════════════════════════
-   INIT
-════════════════════════════════════════════════════ */
-persist();
-render();
+/* ════════ CHARACTERS ════════ */
+function renderChars(){
+  const g=$('#charGrid');g.innerHTML='';
+  CHARS.forEach(c=>{
+    const cell=document.createElement('div');
+    cell.className='char-cell';
+    cell.innerHTML=`<div class="expand">⤢</div>
+      <div class="ph"><img src="${IMG[c.img]}" alt="${c.nm}"></div>
+      <div class="lbl"><div class="nm">${c.nm}</div><div class="rl">${c.rl}</div></div>`;
+    cell.onclick=()=>openLB(c.img,c.nm+' — '+c.rl);
+    g.appendChild(cell);
+  });
+  const r=$('#animalRow');r.innerHTML='';
+  ANIMALS.forEach(a=>{
+    const m=document.createElement('div');m.className='mini';
+    m.innerHTML=`<div class="mi">${a.ico}</div><div class="mn">${a.nm}</div><div class="md">${a.md}</div>`;
+    r.appendChild(m);
+  });
+}
+
+/* ════════ LIGHTBOX ════════ */
+const LBT={comic:'Tegneserie: Kraften',map:'Kart over Øya'};
+function openLB(key,title){
+  const src=IMG[key]||(key==='map'?IMG.oya:'');
+  $('#lbImg').src=src;
+  $('#lbImg').className='fit';
+  $('#lbTtl').textContent=title||LBT[key]||'';
+  $('#lbHint').style.display='block';
+  $('#lb').classList.add('open');
+}
+$('#lbClose').onclick=()=>$('#lb').classList.remove('open');
+$('#lbZoom').onclick=()=>{
+  const img=$('#lbImg');
+  if(img.classList.contains('fit')){img.className='full';$('#lbHint').textContent='Bla for å utforske · trykk ⤢ for å tilpasse';}
+  else{img.className='fit';$('#lbHint').textContent='Trykk ⤢ for å forstørre og bla i detaljene';}
+};
+$('#lb').addEventListener('click',e=>{if(e.target.id==='lb')$('#lb').classList.remove('open');});
+
+/* ════════ PROGRESS ════════ */
+function renderProgress(){
+  const n=st.read.length;
+  $('#progTxt').textContent=n+' av 2 kapitler lest';
+  const cont=$('#contBtn');
+  if(n>=2){$('#progSub').textContent='Du har lest hele historien så langt! 🎉';cont.style.display='none';}
+  else if(st.last){
+    const nextUnread=CHAPTERS.find(c=>!st.read.includes(c.n));
+    $('#progSub').textContent='Fortsett med kapittel '+(nextUnread?nextUnread.n:st.last);
+    cont.style.display='';cont.textContent='Fortsett ›';
+    cont.onclick=()=>{const idx=CHAPTERS.findIndex(c=>c.n===(nextUnread?nextUnread.n:st.last));openChapter(idx<0?0:idx);};
+  }else{
+    $('#progSub').textContent='Trykk «Les historien» for å begynne';cont.style.display='none';
+  }
+}
+
+/* ════════ INIT ════════ */
+$('#heroImg').src=IMG.oya;
+$('#mapImg').src=IMG.oya;
+renderStory();renderChars();renderProgress();
+go('home');
 </script>
 </body>
 </html>
