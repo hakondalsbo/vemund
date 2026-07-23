@@ -487,6 +487,10 @@ img{max-width:100%;display:block;}
         - quiz: 2–4 spørsmål (valgfritt, men gøy):
                 { q:'Spørsmål?', a:['Svar A','Svar B','Svar C'], correct:1,
                   fb:'Kort forklaring etter svar.' }
+        - rank:  rangnavnet leseren oppnår når kapitlet er fullført (lest + all
+                 quiz). Gir automatisk et nytt NIVÅ. F.eks. rank:'Lysbærer'
+        - badge: merket for kapitlet – knytt teksten til noe som skjer i
+                 historien: {ico:'⚡', nm:'Merkenavn', dsc:'Kort forklaring'}
    3. Vil du at en NY figur skal låses opp? Sett riktig 'debut'-nummer
       på figuren i CHARS-listen.
    4. Lagre, og push til GitHub – så er kapitlet live på mobilen.
@@ -508,6 +512,8 @@ const IMG={
 const CHAPTERS=[
 {
   n:1, ttl:'Stormen over fyret', mins:6, released:true, emoji:'⛈️',
+  rank:'Skogsvandrer',
+  badge:{ico:'🌪️', nm:'Værtegn', dsc:'Du så stormen komme – som Bodar leste den på måsene'},
   teaser:'Vemund og Oliver jager Crooki gjennom øya mens en storm ulik alle andre bygger seg opp.',
   body:[
     {img:'oya', cap:'Øya – 147 innbyggere og bare én vei.'},
@@ -632,6 +638,8 @@ const CHAPTERS=[
 },
 {
   n:2, ttl:'Elektrisitet', mins:5, released:true, emoji:'⚡',
+  rank:'Lysbærer',
+  badge:{ico:'⚡', nm:'Kraften våkner', dsc:'Vemund tente fyret igjen med bare hendene'},
   teaser:'Stormen treffer fyret. Et blått lyn forandrer alt Vemund trodde han visste om seg selv.',
   body:[
     `Skogen føltes helt annerledes nå enn den pleide. Vemund så rundt seg og hadde aldri tenkt over hvor mørk skogen egentlig kunne bli.`,
@@ -730,18 +738,29 @@ const CHARS=[
 ];
 
 /* ════════ MERKER ════════ */
+/* Bygges automatisk: ett merke per sluppet kapittel (fra kapitlets 'badge'),
+   pluss faste milepæl-merker som vokser med innholdet. */
+function allQuizzesPerfect(){
+  const withQuiz=CHAPTERS.filter(c=>c.released && c.quiz && c.quiz.length);
+  if(!withQuiz.length)return false;
+  return withQuiz.every(c=>c.quiz.every((q,qi)=>st.answers[c.n+'-'+qi]===q.correct));
+}
 function achievements(){
-  const stars=totalStars();
+  const releasedCh=CHAPTERS.filter(c=>c.released);
   const unlocked=CHARS.filter(c=>st.read.includes(c.debut)).length;
   const available=CHARS.filter(c=>CHAPTERS.find(x=>x.n===c.debut && x.released)).length;
-  return [
-    {ico:'📖',nm:'Leser',dsc:'Les ditt første kapittel',got:st.read.length>=1},
-    {ico:'⚡',nm:'Kraften',dsc:'Les kapittel 2',got:st.read.includes(2)},
-    {ico:'🧠',nm:'Kvissmester',dsc:'Alle rette i én kviss',got:hasPerfectQuiz()},
-    {ico:'🗺️',nm:'Kartleser',dsc:'Åpne kartet',got:!!st.mapSeen},
-    {ico:'👥',nm:'Kjentmann',dsc:'Lås opp alle figurer så langt',got:available>0 && unlocked>=available},
-    {ico:'⭐',nm:'Stjernejeger',dsc:'Samle 8 stjerner',got:stars>=8},
-  ];
+  const list=[];
+  // Ett merke per kapittel – teksten peker på noe konkret i historien
+  releasedCh.forEach(c=>{
+    if(c.badge)list.push({ico:c.badge.ico,nm:c.badge.nm,dsc:c.badge.dsc,got:st.read.includes(c.n)});
+  });
+  // Milepæler som skalerer med hvor mye innhold som finnes
+  list.push({ico:'🧠',nm:'Kvissmester',dsc:'Alle rette i én kviss',got:hasPerfectQuiz()});
+  list.push({ico:'🏆',nm:'Altviter',dsc:'Alle rette i alle kvisser',got:allQuizzesPerfect()});
+  list.push({ico:'🗺️',nm:'Kartleser',dsc:'Åpne kartet',got:!!st.mapSeen});
+  list.push({ico:'👥',nm:'Kjentmann',dsc:'Lås opp alle figurer så langt',got:available>0 && unlocked>=available});
+  list.push({ico:'📚',nm:'Øyakjenner',dsc:'Les alle kapitler så langt',got:releasedCh.length>0 && releasedCh.every(c=>st.read.includes(c.n))});
+  return list;
 }
 
 /* ════════ STATE ════════ */
@@ -770,11 +789,20 @@ function hasPerfectQuiz(){
     return c.quiz.every((q,qi)=>st.answers[c.n+'-'+qi]===q.correct);
   });
 }
-const LEVELS=[
-  {s:0,name:'Strandvandrer'},{s:3,name:'Skogsvandrer'},{s:6,name:'Fyrvokter'},
-  {s:10,name:'Stormjeger'},{s:15,name:'Lysbærer'},{s:22,name:'Havets mester'},
-];
+/* Nivåene bygges fra kapitlene: du når kapitlets rang når du har samlet alle
+   stjernene i det (lest + alle quiz-svar). Legg til et kapittel med 'rank',
+   så dukker et nytt nivå opp av seg selv. */
+function buildLevels(){
+  const lv=[{s:0,name:'Strandvandrer'}];
+  let cum=0;
+  CHAPTERS.filter(c=>c.released).forEach(c=>{
+    cum += 1 + (c.quiz?c.quiz.length:0);
+    lv.push({s:cum,name:c.rank||('Kapittel '+c.n)});
+  });
+  return lv;
+}
 function levelInfo(stars){
+  const LEVELS=buildLevels();
   let idx=0;
   for(let i=0;i<LEVELS.length;i++){if(stars>=LEVELS[i].s)idx=i;}
   const cur=LEVELS[idx],next=LEVELS[idx+1]||null;
