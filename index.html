@@ -977,6 +977,9 @@ function openChapter(i){
   go('reader');
 }
 
+/* Feilforsøk lagres kun i minnet (ikke localStorage): rød markering til man
+   treffer rett. st.answers[key] settes først når svaret er RIKTIG. */
+const wrongTries={};
 function renderQuiz(c){
   const box=$('#quizEl');box.innerHTML='';
   if(!c.quiz||!c.quiz.length)return;
@@ -985,30 +988,35 @@ function renderQuiz(c){
   wrap.innerHTML=`<h4>🧠 Test deg selv</h4><div class="qsub">${c.quiz.length} spørsmål · hvert riktige svar gir en stjerne ⭐</div>`;
   c.quiz.forEach((q,qi)=>{
     const key=c.n+'-'+qi;
-    const answered=st.answers[key]!==undefined;
-    const chosen=st.answers[key];
+    const solved=st.answers[key]!==undefined;   // satt = svart RIKTIG
+    const tried=wrongTries[key]||[];            // indekser man har bommet på
     const qd=document.createElement('div');
-    qd.className='q'+(answered?' answered':'');
+    qd.className='q'+(solved?' answered':'');
     qd.innerHTML=`<div class="qq"><span class="qnum">${qi+1}.</span> ${q.q}</div>`;
     q.a.forEach((opt,oi)=>{
       const btn=document.createElement('button');
       let cls='opt';let mark='';
-      if(answered){
+      if(solved){
         cls+=' done';
         if(oi===q.correct){cls+=' correct';mark='✓';}
-        else if(oi===chosen){cls+=' wrong';mark='✗';}
         else{cls+=' dim';}
+      }else if(tried.includes(oi)){
+        cls+=' wrong done';mark='✗';   // bommet: markert rødt, men resten kan fortsatt trykkes
       }
       btn.className=cls;
       btn.innerHTML=`<span class="mark">${mark}</span><span>${opt}</span>`;
       btn.onclick=()=>answerQuiz(c,qi,oi);
       qd.appendChild(btn);
     });
-    if(answered){
+    if(solved){
       const fb=document.createElement('div');
-      const ok=chosen===q.correct;
-      fb.className='qfb '+(ok?'ok':'no');
-      fb.textContent=(ok?'Riktig! ':'Nesten! ')+(q.fb||'');
+      fb.className='qfb ok';
+      fb.textContent='Riktig! '+(q.fb||'');   // forklaringen (kan avsløre svaret) vises først når man har rett
+      qd.appendChild(fb);
+    }else if(tried.length){
+      const fb=document.createElement('div');
+      fb.className='qfb no';
+      fb.textContent='Nesten – prøv en gang til! 💪';
       qd.appendChild(fb);
     }
     wrap.appendChild(qd);
@@ -1027,14 +1035,20 @@ function renderQuiz(c){
 
 function answerQuiz(c,qi,oi){
   const key=c.n+'-'+qi;
-  if(st.answers[key]!==undefined)return; // låst etter svar
-  st.answers[key]=oi;save();
   const q=c.quiz[qi];
-  if(oi===q.correct)toast('Riktig! +1 ⭐');
-  else toast('Nesten – prøv å huske til neste gang!');
-  renderQuiz(c);
-  updateHeaderStars();
-  checkAchievements();
+  if(st.answers[key]!==undefined)return;      // allerede løst – låst
+  if(oi===q.correct){
+    st.answers[key]=oi;save();                // RIKTIG: lagre varig fremdrift
+    delete wrongTries[key];                   // rydd opp i bomma-markeringer
+    toast('Riktig! +1 ⭐');
+    renderQuiz(c);updateHeaderStars();checkAchievements();
+    return;
+  }
+  // ── FEIL: "prøv til rett" – man kan bytte alternativ ──
+  const tries=wrongTries[key]||(wrongTries[key]=[]);
+  if(!tries.includes(oi))tries.push(oi);      // marker bommen rødt (kun i minnet)
+  toast('Nesten – prøv et annet svar!');
+  renderQuiz(c);                              // tegn på nytt: øvrige alternativer er fortsatt trykkbare
 }
 
 function updateReadBtn(){
